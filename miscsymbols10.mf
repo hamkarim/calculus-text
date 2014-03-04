@@ -1,0 +1,6 @@
+font_identifier:="Miscellaneous Symbols";
+input hershey10.mf
+font_coding_scheme:="Hershey symbols";
+input pen.mf
+input miscsymbols.mf
+input metrics.mf

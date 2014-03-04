@@ -1,0 +1,37 @@
+% an eightpoint macro similar to The TeXbook, Appendix E
+\ifx\eightpointisalreadyloaded\relax%
+  \endinput\else\let\eightpointisalreadyloaded=\relax\fi
+\font\eightrm ptmr at 8pt
+\font\eightit ptmri at 8pt
+\font\eightsl ptmro at 8pt
+\font\eighttt pcrr at 8pt
+\font\eightbf ptmb at 8pt
+\font\eightcal cmsy8
+\font\eightsubcal cmsy6
+\font\eightsubsubcal cmsy5
+\long\def\setupamsfonts{\csname newif\endcsname\ifamsfonts\amsfontstrue}
+\ifx\ifamsfonts\undefined\let\next\setupamsfonts
+\else\let\next\relax\fi\next
+\ifamsfonts
+\font\eightbbbold=msbm8
+\font\eightsubbbbold=msbm7
+\fi
+%\font\eightscfont=pcrr at 8.4pt
+\font\eightscfont=ptmrsc at 8.4pt
+\def\eightpoint{\def\rm{\fam0\eightrm}% switch to 8-point type
+  \MTMI{8.4pt}{6.4pt}{5pt}\MTSY{8.4pt}{6.4pt}{5pt}\MTEX{8.4pt}%
+  \MathRoman{ptmr}{8.4pt}{6.4pt}{5pt}\MathBold{ptmb}{8.4pt}{6.4pt}{5pt}%
+  \MathItalic{ptmri}{8.4pt}{6.4pt}{5pt}\MathOblique{ptmro}{8.4pt}{6.4pt}{5pt}%
+  \textfont\calfam\eightcal \scriptfont\calfam\eightsubcal
+  \scriptscriptfont\calfam\eightsubsubcal
+  \def\it{\fam\itfam\eightit}%
+  \def\sl{\fam\slfam\eightsl}%
+  \def\tt{\fam\ttfam\eighttt}%
+  \def\bf{\fam\bffam\eightbf}%
+  \ifamsfonts
+  \textfont\bbbfam\eightbbbold \scriptfont\bbbfam\eightsubbbbold
+  \def\bbbold{\fam\bbbfam\eightbbbold}\fi%
+  \normalbaselineskip=10pt%
+  \setbox\strutbox=\hbox{\vrule height8pt depth2pt width0pt}%
+  \def\sc{\fam\smcap\eightscfont}\textfont\smcap=\eightscfont 
+  \normalbaselines\rm}

@@ -1,0 +1,41 @@
+% an eightpoint macro similar to The TeXbook, Appendix E
+\ifx\eightpointisalreadyloaded\relax%
+  \endinput\else\let\eightpointisalreadyloaded=\relax\fi
+\font\eightrm=cmr8 \font\eightsubrm=cmr6 \font\eightsubsubrm=cmr5
+\font\eighti=cmmi8 \font\eightsubi=cmmi6 \font\eightsubsubi=cmmi5
+\font\eightsy=cmsy8 \font\eightsubsy=cmsy6 \font\eightsubsubsy=cmsy5
+\font\eighttt=cmtt8
+\font\eightbf=cmbx8 \font\eightsubbf=cmbx6 \font\eightsubsubbf=cmbx5
+\font\eightit=cmti8
+\font\eightsl=cmsl8
+\font\eightscfont=cmcsc10 at 8pt
+\long\def\setupamsfonts{\csname newif\endcsname\ifamsfonts\amsfontstrue}
+\ifx\ifamsfonts\undefined\let\next\setupamsfonts
+\else\let\next\relax\fi\next
+\long\def\setupbbbold{\csname newfam\endcsname\bbbfam}
+\ifamsfonts\ifx\bbbfam\undefined\let\next\setupbbbold\else
+\let\next\relax\fi\else\let\next\relax\fi\next
+\ifamsfonts
+\font\eightbbbold=msbm8
+\font\eightsubbbbold=msbm6
+\fi
+\font\eightx cmex8
+\font\eightsubex cmex7
+\font\eightsubsubex cmex7
+\def\eightpoint{\def\rm{\fam0\eightrm}% switch to 8-point type
+  \textfont0=\eightrm \scriptfont0=\eightsubrm \scriptscriptfont0=\eightsubsubrm
+  \textfont1=\eighti \scriptfont1=\eightsubi \scriptscriptfont1=\eightsubsubi
+  \textfont2=\eightsy \scriptfont2=\eightsubsy \scriptscriptfont2=\eightsubsubsy
+  \textfont3=\eightx \scriptfont3=\eightsubex \scriptscriptfont3=\eightsubsubex
+  \textfont\itfam=\eightit  \def\it{\fam\itfam\eightit}%
+  \textfont\slfam=\eightsl  \def\sl{\fam\slfam\eightsl}%
+  \textfont\ttfam=\eighttt  \def\tt{\fam\ttfam\eighttt}%
+  \textfont\bffam=\eightbf  \scriptfont\bffam=\eightsubbf
+   \scriptscriptfont\bffam=\eightsubsubbf  \def\bf{\fam\bffam\eightbf}%
+  \ifamsfonts
+  \textfont\bbbfam\eightbbbold \scriptfont\bbbfam\eightsubbbbold
+  \def\bbbold{\fam\bbbfam\eightbbbold}\fi%
+  \normalbaselineskip=10pt%
+  \setbox\strutbox=\hbox{\vrule height8pt depth2pt width0pt}%
+  \def\sc{\fam\smcap\eightscfont}\textfont\smcap=\eightscfont 
+  \normalbaselines\rm}

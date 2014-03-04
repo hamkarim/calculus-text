@@ -1,0 +1,141 @@
+\catcode`!=11 
+\newdimen\!!xB
+\newdimen\!!yB
+\newdimen\!!xE
+\newdimen\!!yE
+\newdimen\!!HYP
+\newdimen\!!cosine
+\newdimen\!!sine
+\newdimen\!!DIAMOFFSET
+\newdimen\!!RADIUSOFFSET
+\newdimen\!!RADIUS
+\newdimen\!OFFSETAMOUNT
+\!OFFSETAMOUNT=2pt
+% *******************************
+% *** BRACES                  ***
+% *******************************
+%
+% ** User commands
+% **  \putbrace <RADIUS> from XFROM YFROM to XTO YTO
+%
+% ** Draws a simple ``curly brace'' between given points, using
+% ** quarter circles with radius RADIUS at the ends and to form the
+% ** point in the middle. The brace is offset by \!OFFSETAMOUNT in the
+% ** direction of the point.
+%
+\def\putbrace <#1> from #2 #3 to #4 #5 {%
+\!!RADIUS=#1\!!RADIUSOFFSET=\!OFFSETAMOUNT
+\advance\!!RADIUSOFFSET by \!!RADIUS
+\!!DIAMOFFSET=\!!RADIUSOFFSET\advance\!!DIAMOFFSET by \!!RADIUS
+\!!xB=\Xdistance{#2}\!!yB=\Ydistance{#3}
+\!!xE=\Xdistance{#4}\!!yE=\Ydistance{#5}
+\advance\!!yE by -\!!yB\advance\!!xE by -\!!xB
+\placehypotenuse for <\!!xE> and <\!!yE> in <\!!HYP>
+\Divide <\!!xE> by <\!!HYP> forming <\!!xB>
+\placevalueinpts of <\!!xB> in {\!!cosine}
+\Divide <\!!yE> by <\!!HYP> forming <\!!yB>
+\placevalueinpts of <\!!yB> in {\!!sine}
+\put {\beginpicture
+\setdimensionmode
+\startrotation by {\!!cosine} {\!!sine} about {0pt} {0pt}
+\!!xE=\!!HYP \divide\!!xE by 2 \advance\!!xE by -1.9696\!!RADIUS
+\ellipticalarc axes ratio 2:1 80 degrees from {\!!xE} {\!!RADIUSOFFSET}
+                center at {\!!xE} {\!!DIAMOFFSET} %
+\plot {2\!!RADIUS} {\!!RADIUSOFFSET} {\!!xE} {\!!RADIUSOFFSET} /
+\advance\!!xE by 3.93923\!!RADIUS\!!xB=\!!HYP\advance\!!xB by -2\!!RADIUS
+\ellipticalarc axes ratio 2:1 -80 degrees from {\!!xE} {\!!RADIUSOFFSET}
+                center at {\!!xE} {\!!DIAMOFFSET} %
+\plot {\!!xE} {\!!RADIUSOFFSET} {\!!xB} {\!!RADIUSOFFSET} /
+\ellipticalarc axes ratio 2:1 -90 degrees from {0pt} {\!OFFSETAMOUNT} 
+                center at {2\!!RADIUS} {\!OFFSETAMOUNT}
+\ellipticalarc axes ratio 2:1 90 degrees from {\!!HYP} {\!OFFSETAMOUNT} 
+                center at {\!!xB} {\!OFFSETAMOUNT}
+\endpicture} at #2 #3
+}
+
+% *******************************
+% *** ARROWS  (Draws arrows)  ***
+% *******************************
+%
+% ** User commands
+% **  \altarrow <ARROW HEAD LENGTH,HEAD POSITION> [MID FRACTION, BASE FRACTION]
+% **    [<XSHIFT,YSHIFT>] from XFROM YFROM to XTO YTO
+%
+% ** Draws an arrow from (XFROM,YFROM) to (XTO,YTO).  The arrow head
+% ** is constructed of two quadratic arcs, which extend back a distance
+% ** ARROW HEAD LENGTH (a dimension) on both sides of the arrow shaft
+% ** from the tip of the arrowhead. The arrowhead tip is at distance
+% ** HEAD POSITION from the XTO YTO end of the line.
+%
+% ** All the way back the arcs are a distance BASE FRACTION*ARROW HEAD
+% ** LENGTH apart, while half-way back they are a distance MID FRACTION*
+% ** ARROW HEAD LENGTH apart. <XSHIFT,YSHIFT> is optional, and has
+% ** its usual interpreation. See Subsection 5.4 of the manual.
+
+\def\one#1,#2.{#1}
+\def\two#1,#2.{#2}
+\newdimen\!xstart
+\newdimen\!ystart
+
+\def\altarrow <#1,#2> [#3,#4]{%
+  \!ifnextchar<{\!altarrow{#1}{#2}{#3}{#4}}{\!altarrow{#1}{#2}{#3}{#4}<\!zpt,\!zpt> }}
+
+\def\!altarrow#1#2#3#4<#5> from #6 #7 to #8 #9 {%
+%
+% ** convert to dimensions
+  \!xloc=\!M{#8}\!xunit   
+  \!yloc=\!M{#9}\!yunit
+  \!dxpos=\!xloc  \!dimenA=\!M{#6}\!xunit  \advance \!dxpos -\!dimenA
+  \!dypos=\!yloc  \!dimenA=\!M{#7}\!yunit  \advance \!dypos -\!dimenA
+  \let\!MAH=\!M%                         ** save current c/d mode
+  \!setdimenmode%                        ** go into dimension mode
+%
+  \!xshift=\one#5.\relax  \!yshift=\two#5.\relax%  ** pick up shift
+  \!reverserotateonly\!xshift\!yshift%   ** back rotate shift
+  \advance\!xshift\!xloc  \advance\!yshift\!yloc
+%
+% **  draw shaft of arrow
+  \!xS=-\!dxpos  \advance\!xS\!xshift
+  \!yS=-\!dypos  \advance\!yS\!yshift
+  \!start (\!xS,\!yS)
+  \!ljoin (\!xshift,\!yshift)
+%
+% ** find 32*cosine and 32*sine of angle of rotation
+  \!Pythag\!dxpos\!dypos\!arclength
+  \!divide\!dxpos\!arclength\!dxpos  
+  \!dxpos=32\!dxpos  \!removept\!dxpos\!!cos
+  \!divide\!dypos\!arclength\!dypos  
+  \!dypos=32\!dypos  \!removept\!dypos\!!sin
+% 
+% ** construct arrowhead
+  \!myhalfhead{#1}{#2}{#3}{#4}%                ** draw half of arrow head
+  \!myhalfhead{#1}{#2}{-#3}{-#4}%              ** draw other half
+%
+  \let\!M=\!MAH%                         ** restore old c/d mode
+  \ignorespaces}
+%
+% ** draw half of arrow head
+  \def\!myhalfhead#1#2#3#4{%
+    \!dimenC=-#1%                
+    \divide \!dimenC 2 %                 ** half way back
+    \!dimenD=#3\!dimenC%                 ** half the mid width
+    \advance\!dimenC by -#2
+    \!rotate(\!dimenC,\!dimenD)by(\!!cos,\!!sin)to(\!xM,\!yM)
+    \!dimenC=-#1%                        ** all the way back
+    \!dimenD=#4\!dimenC
+    \!dimenD=.5\!dimenD%                 ** half the full width
+    \advance\!dimenC by -#2
+    \!rotate(\!dimenC,\!dimenD)by(\!!cos,\!!sin)to(\!xE,\!yE)
+    \!dimenC=0pt%
+    \!dimenD=0pt%
+    \advance\!dimenC by -#2
+    \!rotate(\!dimenC,\!dimenD)by(\!!cos,\!!sin)to(\!xstart,\!ystart)
+    \advance\!xstart by \!xshift
+    \advance\!ystart by \!yshift
+    \!start (\!xstart,\!ystart)
+    \advance\!xM\!xshift  \advance\!yM\!yshift
+    \advance\!xE\!xshift  \advance\!yE\!yshift
+    \!qjoin (\!xM,\!yM) (\!xE,\!yE) 
+    \ignorespaces}
+
+\catcode`!=12

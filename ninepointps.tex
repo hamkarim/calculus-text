@@ -1,0 +1,39 @@
+% a ninepoint macro similar to The TeXbook, Appendix E
+% Set up to use Times Roman and MathTime fonts
+%
+\ifx\ninepointisalreadyloaded\relax%
+  \endinput\else\let\ninepointisalreadyloaded=\relax\fi
+\font\ninerm ptmr at 9pt
+\font\nineit ptmri at 9pt
+\font\ninesl ptmro at 9pt
+\font\ninett pcrr at 9pt
+\font\ninebf ptmb at 9pt
+\font\ninecal cmsy9
+\font\ninesubcal cmsy6
+\font\ninesubsubcal cmsy5
+\long\def\setupamsfonts{\csname newif\endcsname\ifamsfonts\amsfontstrue}
+\ifx\ifamsfonts\undefined\let\next\setupamsfonts
+\else\let\next\relax\fi\next
+\ifamsfonts
+\font\ninebbbold=msbm9
+\font\ninesubbbbold=msbm7
+\fi
+%\font\ninescfont=pcrr at 9.2pt
+\font\ninescfont=ptmrsc at 9.2pt
+\def\ninepoint{\def\rm{\fam0\ninerm}% switch to 9-point type
+  \MTMI{9.2pt}{7pt}{5pt}\MTSY{9.2pt}{7pt}{5pt}\MTEX{9.2pt}%
+  \MathRoman{ptmr}{9.2pt}{7pt}{5.5pt}\MathBold{ptmb}{9.2pt}{7pt}{5.5pt}%
+  \MathItalic{ptmri}{9.2pt}{7pt}{5.5pt}\MathOblique{ptmro}{9.2pt}{7pt}{5.5pt}%
+  \textfont\calfam\ninecal \scriptfont\calfam\ninesubcal
+  \scriptscriptfont\calfam\ninesubsubcal
+  \def\it{\fam\itfam\nineit}%
+  \def\sl{\fam\slfam\ninesl}%
+  \def\tt{\ninett}%
+  \def\bf{\fam\bffam\ninebf}%
+  \ifamsfonts
+  \textfont\bbbfam\ninebbbold \scriptfont\bbbfam\ninesubbbbold
+  \def\bbbold{\fam\bbbfam\ninebbbold}\fi%
+  \normalbaselineskip=11pt%
+  \setbox\strutbox=\hbox{\vrule height8pt depth3pt width0pt}%
+  \def\sc{\fam\smcap\ninescfont}\textfont\smcap=\ninescfont 
+  \normalbaselines\rm}

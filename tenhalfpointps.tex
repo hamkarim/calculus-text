@@ -1,0 +1,37 @@
+% a tenpoint macro similar to The TeXbook, Appendix E
+\ifx\tenhalfpointisalreadyloaded\relax%
+  \endinput\else\let\tenhalfpointisalreadyloaded=\relax\fi
+\font\tenhalfrm ptmr at 10.5pt
+\font\tenhalfit ptmri at 10.5pt
+\font\tenhalfsl ptmro at 10.5pt
+\font\tenhalftt pcrr at 10.5pt
+\font\tenhalfbf ptmb at 10.5pt
+\font\tenhalfcal cmsy10
+\font\tenhalfsubcal cmsy7
+\font\tenhalfsubsubcal cmsy5
+\long\def\setupamsfonts{\csname newif\endcsname\ifamsfonts\amsfontstrue}
+\ifx\ifamsfonts\undefined\let\next\setupamsfonts
+\else\let\next\relax\fi\next
+\ifamsfonts
+\font\tenhalfbbbold=msbm10
+\font\tenhalfsubbbbold=msbm7
+\fi
+%\font\tenhalfscfont pcrr at 9.6pt
+\font\tenhalfscfont ptmrsc at 9.6pt
+\def\tenhalfpoint{\def\rm{\fam0\tenhalfrm}%
+  \MTMI{10.5pt}{7.6pt}{6pt}\MTSY{10.5pt}{7.6pt}{6pt}\MTEX{10.5pt}%
+  \MathRoman{ptmr}{10.5pt}{7.6pt}{6pt}\MathBold{ptmb}{10.5pt}{7.6pt}{6pt}%
+  \MathItalic{ptmri}{10.5pt}{7.6pt}{6pt}\MathOblique{ptmro}{10.5pt}{7.6pt}{6pt}%
+  \textfont\calfam\tenhalfcal \scriptfont\calfam\tenhalfsubcal
+  \scriptscriptfont\calfam\tenhalfsubsubcal
+  \def\it{\fam\itfam\tenhalfit}%
+  \def\sl{\fam\slfam\tenhalfsl}%
+  \def\tt{\fam\ttfam\tenhalftt}%
+  \def\bf{\fam\bffam\tenhalfbf}%
+  \ifamsfonts
+  \textfont\bbbfam\tenhalfbbbold \scriptfont\bbbfam\tenhalfsubbbbold
+  \def\bbbold{\fam\bbbfam\tenhalfbbbold}\fi%
+  \normalbaselineskip=12pt%
+  \setbox\strutbox=\hbox{\vrule height8.5pt depth3.5pt width0pt}%
+  \def\sc{\fam\smcap\tenhalfscfont}\textfont\smcap=\tenhalfscfont %
+  \normalbaselines\rm}

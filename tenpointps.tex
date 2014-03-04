@@ -1,0 +1,35 @@
+% a tenpoint macro similar to The TeXbook, Appendix E
+\ifx\tenpointisalreadyloaded\relax%
+  \endinput\else\let\tenpointisalreadyloaded=\relax\fi
+\font\tenrm ptmr at 10pt
+\font\tenit ptmri at 10pt
+\font\tensl ptmro at 10pt
+\font\tentt pcrr at 10pt
+\font\tenbf ptmb at 10pt
+\font\tencal cmsy9
+\font\tensubcal cmsy6
+\font\tensubsubcal cmsy5
+\long\def\setupamsfonts{\csname newif\endcsname\ifamsfonts\amsfontstrue}
+\ifx\ifamsfonts\undefined\let\next\setupamsfonts
+\else\let\next\relax\fi\next
+\ifamsfonts
+\font\tenbbbold=msbm10
+\font\tensubbbbold=msbm7
+\fi
+\def\tenpoint{\def\rm{\fam0\tenrm}%
+  \MTMI{10pt}{7.6pt}{6pt}\MTSY{10pt}{7.6pt}{6pt}\MTEX{10pt}%
+  \MathRoman{ptmr}{10pt}{7.6pt}{6pt}\MathBold{ptmb}{10pt}{7.6pt}{6pt}%
+  \MathItalic{ptmri}{10pt}{7.6pt}{6pt}\MathOblique{ptmro}{10pt}{7.6pt}{6pt}%
+  \textfont\calfam\tencal \scriptfont\calfam\tensubcal
+  \scriptscriptfont\calfam\tensubsubcal
+  \def\it{\fam\itfam\tenit}%
+  \def\sl{\fam\slfam\tensl}%
+  \def\tt{\fam\ttfam\tentt}%
+  \def\bf{\fam\bffam\tenbf}%
+  \ifamsfonts
+  \textfont\bbbfam\tenbbbold \scriptfont\bbbfam\tensubbbbold
+  \def\bbbold{\fam\bbbfam\tenbbbold}\fi%
+  \normalbaselineskip=12pt%
+  \setbox\strutbox=\hbox{\vrule height8.5pt depth3.5pt width0pt}%
+  \def\sc{\fam\smcap\scfont}\textfont\smcap=\scfont 
+  \normalbaselines\rm}

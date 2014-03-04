@@ -1,0 +1,31 @@
+% a tenpoint macro similar to The TeXbook, Appendix E
+\ifx\tenpointisalreadyloaded\relax%
+  \endinput\else\let\tenpointisalreadyloaded=\relax\fi
+\font\sevenex cmex7
+\long\def\setupamsfonts{\csname newif\endcsname\ifamsfonts\amsfontstrue}
+\ifx\ifamsfonts\undefined\let\next\setupamsfonts
+\else\let\next\relax\fi\next
+\long\def\setupbbbold{\csname newfam\endcsname\bbbfam}
+\ifamsfonts\ifx\bbbfam\undefined\let\next\setupbbbold\else
+\let\next\relax\fi\else\let\next\relax\fi\next
+\ifamsfonts
+\font\tenbbbold=msbm10
+\font\tensubbbbold=msbm7
+\fi
+\def\tenpoint{\def\rm{\fam0\tenrm}%
+  \textfont0=\tenrm \scriptfont0=\sevenrm \scriptscriptfont0=\fiverm
+  \textfont1=\teni \scriptfont1=\seveni \scriptscriptfont1=\fivei
+  \textfont2=\tensy \scriptfont2=\sevensy \scriptscriptfont2=\fivesy
+  \textfont3=\tenex \scriptfont3=\sevenex \scriptscriptfont3=\sevenex
+  \textfont\itfam=\tenit  \def\it{\fam\itfam\tenit}%
+  \textfont\slfam=\tensl  \def\sl{\fam\slfam\tensl}%
+  \textfont\ttfam=\tentt  \def\tt{\fam\ttfam\tentt}%
+  \textfont\bffam=\tenbf  \scriptfont\bffam=\sevenbf
+  \scriptscriptfont\bffam=\fivebf  \def\bf{\fam\bffam\tenbf}%
+  \ifamsfonts
+  \textfont\bbbfam\tenbbbold \scriptfont\bbbfam\tensubbbbold
+  \def\bbbold{\fam\bbbfam\tenbbbold}\fi%
+  \normalbaselineskip=12pt%
+  \setbox\strutbox=\hbox{\vrule height8.5pt depth3.5pt width0pt}%
+  \def\sc{\fam\smcap\scfont}\textfont\smcap=\scfont 
+  \normalbaselines\rm}

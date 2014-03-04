@@ -1,0 +1,39 @@
+% an eleven point macro similar to The TeXbook, Appendix E
+%
+\ifx\elevenpointisalreadyloaded\relax%
+  \endinput\else\let\elevenpointisalreadyloaded=\relax\fi
+\font\elevenrm ptmr at 11pt
+\font\elevenit ptmri at 11pt
+\font\elevensl ptmro at 11pt
+\font\eleventt pcrr at 11pt
+\font\elevenbf ptmb at 11pt
+\font\elevencal cmsy9
+\font\elevensubcal cmsy6
+\font\elevensubsubcal cmsy5
+\long\def\setupamsfonts{\csname newif\endcsname\ifamsfonts\amsfontstrue}
+\ifx\ifamsfonts\undefined\let\next\setupamsfonts
+\else\let\next\relax\fi\next
+\ifamsfonts
+\font\elevenbbbold=msbm10 scaled \magstephalf
+\font\elevensubbbbold=msbm7 scaled \magstephalf
+\fi
+%\font\elevenscfont=pcrr at 11pt
+\font\elevenscfont=ptmrsc at 11pt
+\def\elevenpoint{\def\rm{\fam0\elevenrm}%
+  \MTMI{11pt}{8.2pt}{6.5pt}\MTSY{11pt}{8.2pt}{6.5pt}\MTEX{11pt}%
+  \MathRoman{ptmr}{11pt}{8.2pt}{6.5pt}\MathBold{ptmb}{11pt}{8.2pt}{6.5pt}%
+  \MathItalic{ptmri}{11pt}{8.2pt}{6.5pt}%
+  \MathOblique{ptmro}{11pt}{8.2pt}{6.5pt}%
+  \textfont\calfam\elevencal \scriptfont\calfam\elevensubcal
+  \scriptscriptfont\calfam\elevensubsubcal
+  \def\it{\fam\itfam\elevenit}%
+  \def\sl{\fam\slfam\elevensl}%
+  \def\tt{\eleventt}%
+  \def\bf{\fam\bffam\elevenbf}%
+  \ifamsfonts
+  \textfont\bbbfam\elevenbbbold \scriptfont\bbbfam\elevensubbbbold
+  \def\bbbold{\fam\bbbfam\elevenbbbold}\fi%
+  \normalbaselineskip=13.1pt%
+  \setbox\strutbox=\hbox{\vrule height9.1pt depth4pt width0pt}%
+  \def\sc{\fam\smcap\elevenscfont}\textfont\smcap=\elevenscfont 
+  \normalbaselines\rm}

@@ -1,0 +1,1855 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Plain TeX Macros for the Addison-Wesley Upper Level Math Series
+%
+% David Guichard, June 1996
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% You can use your text editor to search for these sections; for
+% example, search for ``% Index'' to find the indexing macros.
+%
+% Sections:
+%
+% Choices
+% Other macro packages
+% Fonts
+% Important dimensions
+% Footnotes
+% Footline and headline
+% Table of contents
+% Index
+% Cross references
+% Title page
+% Chapters, sections, subsections
+% Exercises 
+% Suggested references 
+% Extracts
+% Lists 
+% Output routine
+% Theorem-like objects
+% Figures
+% Miscellaneous stuff
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Choices, choices. Note that the cameraready, times and
+% printblankpages flags are set by making appropriate definitions in
+% the main document, before this file is loaded. See the user's manual
+% for details.
+%
+\def\FALSE{false}
+\def\TRUE{true}
+%
+\tracingstats1
+%
+\newif\ifamsfonts
+\amsfontstrue            % true if the AMS extra symbol fonts are available
+%
+% Should the table of contents include subsections?
+%
+\newif\ifsubsectionsintoc
+\ifx\subsectionsintoc\FALSE\subsectionsintocfalse\else
+\ifx\subsectionsintoc\TRUE\subsectionsintoctrue\else
+\subsectionsintocfalse\fi\fi
+%
+\newif\ifprintblankpages
+\ifx\printblankpages\FALSE\printblankpagesfalse\else
+\ifx\printblankpages\TRUE\printblankpagestrue\else\printblankpagestrue\fi\fi
+%
+% \ifcamerareadytrue makes the pages the correct book size and puts
+% registration marks at the corners. \ifcamerareadyfalse makes the
+% pages full size (8.5 by 11), magnifies the document, and increases the
+% baselineskip for easier reading and correcting. True is the default;
+% it may be changed by including the command \def\cameraready{false}
+% in the main document *before* the ``\input bookmacros'' line.
+%
+\newif\ifkindle
+\ifx\kindle\FALSE\kindlefalse\else
+\ifx\kindle\TRUE\kindletrue\else\kindlefalse\fi\fi
+%
+\newif\ifcameraready
+\ifx\cameraready\FALSE\camerareadyfalse\else
+\ifx\cameraready\TRUE\camerareadytrue\else\camerareadyfalse\fi\fi
+%
+\newif\iftimes
+\ifx\usetimesfonts\FALSE\timesfalse\else
+\ifx\usetimesfonts\TRUE\timestrue\else\timesfalse\fi\fi
+%
+\newif\ifthesis
+\ifx\thesis\FALSE\thesisfalse\else
+\ifx\thesis\TRUE\thesistrue\else\thesisfalse\fi\fi
+%
+\ifcameraready\else
+\ifkindle
+\magnification\magstep2\else
+\magnification\magstep1
+\fi\fi
+%
+% The next if controls whether an index has large capital letters to
+% mark each section of the index. To use, do something like this:
+%
+%   \beginletteredindex
+%   \input indexfile
+%   \endindex
+%
+% You need to set \letteredindexfalse if there is an index after this
+% one and you don't want it lettered.
+%
+\newif\ifletteredindex\letteredindexfalse
+%
+% Whether to number prefatory material with roman numerals.
+\newif\ifromanintro
+\ifx\romanintro\FALSE\romanintrofalse\else
+\ifx\romanintro\TRUE\romanintrotrue\else\romanintrotrue\fi\fi
+%
+%\overfullrule0pt
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Other macro packages
+%
+\input idxmacdrg     % indexing macros--needs my modified version
+\input tindex        % for a second index
+\input eplaindrg     % This works with eplain 1.9 as modified by me.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\def\\{\let\stoken= } \\
+\long\def\unexpandedwrite#1#2{\def\finwrite{\immediate\write#1}%
+  {\aftergroup\finwrite\aftergroup{\s@nitize#2\endsanity}}}
+\def\s@nitize{\futurelet\next\sanswitch}
+\def\sanswitch{\let\n@xt\endsanity \ifx\next\endsanity
+  \else\ifcat\noexpand\next\stoken\aftergroup\space\let\n@xt=\eat
+   \else\ifcat\noexpand\next\bgroup\aftergroup{\let\n@xt=\eat
+    \else\ifcat\noexpand\next\egroup\aftergroup}\let\n@xt=\eat
+     \else\let\n@xt=\copytok\fi\fi\fi\fi \n@xt}
+\def\eat{\afterassignment\s@nitize \let\next= }
+\long\def\copytok#1{\ifcat\noexpand#1\relax\aftergroup\noexpand\fi
+  \ifcat\noexpand#1\noexpand~\aftergroup\noexpand\fi
+  \aftergroup#1\s@nitize}
+\def\endsanity\endsanity{}
+\makeatother
+%
+% Fonts
+%
+\ifamsfonts
+\input amssym.def    % If you have these files and the corresponding 
+\input amssym        % font files for msam10 and msbm10, make \amsfontstrue
+\fi                  % above.
+%
+\iftimes
+\input mtplain
+\input calligraphic
+\input eightpointps
+\input ninepointps
+\input ninehalfpointps
+\input tenpointps
+\input tenhalfpointps
+\input elevenpointps
+\input twelvepointps
+%
+\else  % cm fonts
+%
+\input sevenpoint
+\input eightpoint
+\input ninepoint
+\input tenpoint
+\input elevenpoint
+\input twelvepoint
+\fi
+%
+\iftimes
+\font\booktitlefont ptmb8r at 29truept
+\let\booksubtitlefont\elevenit
+\font\chaptitlefont ptmb8r at 24truept
+\font\chapnumberfont ptmb8r at 42truept
+%\font\thmfont ptmb8r at 10pt
+%\font\secheaderfont ptmb8r at 8pt
+\font\pagenofont ptmb8r at 11pt
+\font\prooffont ptmbi8r at 10.5pt
+\font\remarksfont ptmri8r at 10.5pt
+\font\ctscnfont ptmb8r at 18pt
+\let\authorfont\ctscnfont
+%\font\scfont=pcrr8r
+\font\scfont=ptmrsc at 12truept
+\font\bscfont=ptmbsc at 14.4truept
+\font\secfontmathrm=ptmb8r at 14.4truept
+\font\secfontmathit=ptmbi8r at 14.4truept
+\font\idxfont ptmbi8r at 12truept
+\font\awfont phvb8r at 12truept
+\font\exerciseheadfont ptmbi8r at 11pt
+\let\institutionfont\exerciseheadfont
+\font\referenceheadfont ptmbi8r at 10pt
+\doublehyphendemerits=1000000
+\else
+\font\booktitlefont cmbx10 at 29.86truept
+\font\booksubtitlefont cmti10
+\font\chaptitlefont cmbx10 at 24.88truept
+\font\chapnumberfont cmbx10 at 44.58truept
+\font\pagenofont cmbx10
+\font\prooffont cmbxti10
+\font\remarksfont cmti10
+\font\ctscnfont cmbx10 at 17.28pt
+\let\authorfont\ctscnfont
+\font\scfont=cmcsc10
+\font\bscfont=gmbcsc10 scaled \magstep2
+%\font\bscfont=ptmbsc at 14.4truept
+\font\secfontmathrm=cmbx10 scaled \magstep2
+\font\secfontmathit=cmbxti10 scaled \magstep2
+\font\idxfont cmbxti10 at 12truept
+\font\awfont cmssbx10
+\font\exerciseheadfont cmbxti10 scaled \magstephalf
+\let\institutionfont\exerciseheadfont
+\font\referenceheadfont cmbxti10 
+\fi
+%
+\newfam\smcap \def\sc{\fam\smcap\scfont} \textfont\smcap=\scfont
+%
+% secfont needs fleshing out
+\long\def\setupamsfonts{\csname newif\endcsname\ifamsfonts\amsfontstrue}
+\ifx\ifamsfonts\undefined\let\next\setupamsfonts
+\else\let\next\relax\fi\next
+\long\def\setupbbbold{\csname newfam\endcsname\bbbfam}
+\ifamsfonts\ifx\bbbfam\undefined\let\next\setupbbbold\else
+\let\next\relax\fi\else\let\next\relax\fi\next
+%% \ifamsfonts
+%% \font\tenbbbold=msbm10
+%% \font\tensubbbbold=msbm7
+%% \fi
+%% \def\secfont{\def\rm{\fam0\bscfont}%
+%%   \textfont0=\secfontmathrm \scriptfont0=\sevenrm \scriptscriptfont0=\fiverm
+%%   \textfont1=\secfontmathit \scriptfont1=\seveni \scriptscriptfont1=\fivei
+%%   \textfont2=\tensy \scriptfont2=\sevensy \scriptscriptfont2=\fivesy
+%%   \textfont3=\tenex \scriptfont3=\sevenex \scriptscriptfont3=\sevenex
+%%   \textfont\itfam=\tenit  \def\it{\fam\itfam\tenit}%
+%%   \textfont\slfam=\tensl  \def\sl{\fam\slfam\tensl}%
+%%   \textfont\ttfam=\tentt  \def\tt{\fam\ttfam\tentt}%
+%%   \textfont\bffam=\tenbf  \scriptfont\bffam=\sevenbf
+%%   \scriptscriptfont\bffam=\fivebf  \def\bf{\fam\bffam\tenbf}%
+%%   \ifamsfonts
+%%   \textfont\bbbfam\tenbbbold \scriptfont\bbbfam\tensubbbbold
+%%   \def\bbbold{\fam\bbbfam\tenbbbold}\fi%
+%%   \normalbaselineskip=12pt%
+%%   \setbox\strutbox=\hbox{\vrule height8.5pt depth3.5pt width0pt}%
+%%   \normalbaselines\rm}
+
+\ifamsfonts
+\font\fourteenbbbold=msbm10 scaled \magstep2
+\font\fourteensubbbbold=msbm10
+\fi
+\def\secfont{\def\rm{\fam0\bscfont}%
+  \textfont0=\secfontmathrm \scriptfont0=\tenrm \scriptscriptfont0=\sevenrm
+  \textfont1=\secfontmathit \scriptfont1=\tenit \scriptscriptfont1=\sevenit
+  \textfont2=\tensy \scriptfont2=\tensy \scriptscriptfont2=\sevensy
+  \textfont3=\tenex \scriptfont3=\tenex \scriptscriptfont3=\sevenex
+%%   \textfont\itfam=\tenit  \def\it{\fam\itfam\tenit}%
+%%   \textfont\slfam=\tensl  \def\sl{\fam\slfam\tensl}%
+%%   \textfont\ttfam=\tentt  \def\tt{\fam\ttfam\tentt}%
+%%   \textfont\bffam=\fourteenbf  \scriptfont\bffam=\tenbf
+%%   \scriptscriptfont\bffam=\sevenbf  \def\bf{\fam\bffam\fourteenbf}%
+  \ifamsfonts
+  \textfont\bbbfam\fourteenbbbold \scriptfont\bbbfam\fourteensubbbbold
+  \def\bbbold{\fam\bbbfam\fourteenbbbold}\fi%
+  \normalbaselineskip=18pt%
+  \setbox\strutbox=\hbox{\vrule height12.5pt depth5.5pt width0pt}%
+  \normalbaselines\rm}
+
+%\def\secfont{\bscfont}
+\def\subsecfont{\elevenpoint\bf}
+%
+\iftimes
+\def\secheaderfont{\eightpoint\bf}
+\def\thmfont{\tenpoint\bf}             % For the words "Theorem", "Lemma", etc
+\else
+\def\secheaderfont{\eightpoint\bf}
+\def\thmfont{\tenpoint\bf}             % For the words "Theorem", "Lemma", etc
+\fi
+%
+% blackboard bold
+%
+%\newfam\bbbfam
+\ifamsfonts
+\font\tenbbbold=msbm10\font\tensubbbbold=msbm7
+\textfont\bbbfam\tenbbbold \scriptfont\bbbfam\tensubbbbold
+\def\bbbold{\fam\bbbfam\tenbbbold}
+\def\bbb{\bbbold}
+\else
+\def\bbb{\bf}
+\fi
+% bold math
+\newtoks\hexf
+\def\sethex#1{\ifcase#1 \hexf={0} \or \hexf={1} \or \hexf={2} \or \hexf={3}
+     \or \hexf={4} \or \tsth={5} \or \hexf={6} \or \hexf={7} \or \hexf={8} 
+     \or \hexf={9} \or \hexf={A} \or \hexf={B} \or \hexf={C} \or \hexf={D} 
+     \or \hexf={E} \or \hexf={F}\fi}
+\def\domathdef#1{\def\dodef##1{#1}\expandafter\dodef\the\hexf}
+\newfam\boldmath
+% \def\bmit{\fam\boldmath}
+% \textfont\boldmath\bmath
+% \scriptfont\boldmath\bmathsub
+\font\bgreek cmmib10
+\font\bgreeksub cmmib10 at 7pt
+\newfam\boldgreek
+\sethex\boldgreek
+\domathdef{\mathchardef\bdelta="0#10E}
+\domathdef{\mathchardef\bsigma="0#11B}
+\textfont\boldgreek\bgreek
+\scriptfont\boldgreek\bgreeksub
+% 
+\def\dfont{\bf}
+\def\em{\it}           % for emphasis
+\def\thmstmtfont{}                    % For the statement of a theorem object
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Important dimensions
+%
+% used for cameraready output
+%
+\newdimen\lm
+\newdimen\oddlm\oddlm=0.8125truein
+\newdimen\evenlm\evenlm=0.75truein
+\newdimen\pageheight\pageheight9.25truein
+\newdimen\pagewidth\pagewidth6.375truein
+% 
+% used for non-cameraready output
+%
+\newdimen\pageshift
+\pageshift=0.2truein
+%
+\newskip\abovesectionskip\abovesectionskip 18pt plus6pt
+\newskip\abovesubsectionskip\abovesubsectionskip 13pt plus3pt
+%
+\newskip\beforethmskip\beforethmskip 12pt plus1pt
+\newskip\afterproofskip\afterproofskip=6pt
+%
+\newskip\beforeexerciseskip\beforeexerciseskip 12pt plus6pt
+\newskip\afterexerciseskip\afterexerciseskip 12pt
+%
+\newskip\beforereferenceskip\beforereferenceskip 12pt
+%
+\newskip\extractindentamount\extractindentamount=\parindent
+\newskip\aboveextractskip\aboveextractskip=6pt
+\newskip\belowextractskip\belowextractskip=6pt
+%
+\newskip\beforeclaimlistskip\beforeclaimlistskip=6pt
+\newskip\afterclaimlistskip\afterclaimlistskip=6pt
+\newskip\claimlistseparationskip\claimlistseparationskip=3pt
+%
+\newskip\exerciselistindentamount\exerciselistindentamount=36pt
+\newskip\exerciseseparationskip\exerciseseparationskip=3pt
+\newskip\beforeexerciselistskip\beforeexerciselistskip=3pt
+\newskip\afterexerciselistskip\afterexerciselistskip=3pt
+\newskip\exerciselistseparationskip\exerciselistseparationskip=3pt
+\newskip\afterexerciseremarkskip\afterexerciseremarkskip=6pt
+\newskip\beforeexerciseremarkskip\beforeexerciseremarkskip=6pt
+%
+\newskip\listindentamount\listindentamount=38pt
+\newskip\beforelistskip\beforelistskip=3pt
+\newskip\afterlistskip\afterlistskip=3pt
+\newskip\listseparationskip\listseparationskip=3pt
+%
+\newskip\basaltextbaselineskip
+\newdimen\basalparindent
+%
+% bottomskip is the amount of space left at the bottom of a page.
+% This should be 0pt plus the allowable stretch.
+%
+\newskip\bottomskip
+%
+\abovecolumnskip = 0pt
+\belowcolumnskip = 0pt
+\topskip10truept
+%
+\ifcameraready
+\basaltextbaselineskip12pt plus 0.2pt
+\basalparindent18truept
+\bottomskip 0pt plus 6pt
+\hsize29truepc
+\vsize578truept
+\abovedisplayskip6pt plus 1pt
+\abovedisplayshortskip0pt plus 1pt
+\belowdisplayskip6pt plus 1pt
+\belowdisplayshortskip6pt plus 1pt
+\parskip0pt
+\makeatletter
+\def\raggedbottom{\topskip 10\p@ plus0\p@ \r@ggedbottomtrue}
+\def\normalbottom{\topskip 10\p@ \r@ggedbottomfalse} % undoes \raggedbottom
+\makeatother
+%
+\else\ifthesis                  % thesis
+\hsize=6truein
+\advance\vsize by -0.35truein
+\advance\hoffset by 0.5truein
+\advance\voffset by 0.15truein
+\basaltextbaselineskip12pt
+\basalparindent\parindent
+\bottomskip=0pt plus 1fil
+\makeatletter
+\def\raggedbottom{\topskip 30\p@ plus0\p@ \r@ggedbottomtrue}
+\def\normalbottom{\topskip 30\p@ \r@ggedbottomfalse} % undoes \raggedbottom
+\makeatother
+\else
+%\hsize5.1truein
+%\vsize8.76truein
+\basaltextbaselineskip14pt
+\basalparindent\parindent
+\bottomskip=0pt plus 1fil
+\makeatletter
+\def\raggedbottom{\topskip 10\p@ plus0\p@ \r@ggedbottomtrue}
+\def\normalbottom{\topskip 10\p@ \r@ggedbottomfalse} % undoes \raggedbottom
+\makeatother
+\fi\fi
+%
+\baselineskip\basaltextbaselineskip
+\parindent\basalparindent
+%
+% high penalties for widows and orphans
+%
+\postdisplaypenalty=1000
+\widowpenalty=10000 \clubpenalty=10000
+%
+% Just in case these aren't set properly...the voice of experience.
+%
+\lefthyphenmin=2
+\righthyphenmin=3
+%
+\newif\ifchapstart
+\newif\ifchapopener
+%
+% The next four flags are set at the ends of appropriate items when
+% extra space is left. If such items are immediately followed by items
+% that leave extra space, we can use the flags to avoid leaving extra
+% space twice. We should really have more than four of these, but
+% since many items have the same before & after skip, we make do with
+% these for simplicity, at the expense of some confusion.
+%
+\newif\ifproofflag
+\newif\iflistflag
+\newif\ifexerciseflag
+\newif\ifexerciseremarkflag
+%
+\everypar{\global\proofflagfalse
+          \global\listflagfalse
+          \global\chapstartfalse
+          \global\exerciseflagfalse
+          \global\exerciseremarkflagfalse
+          \ifdim\parindent=0pt\parindent18pt\fi
+}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Footnotes. Non-standard macros from eplain.
+%
+\footnoterulewidth5pc
+%
+\def\footnote#1{\numberedfootnote
+{\eightpoint 
+\abovedisplayskip2pt plus 0pt
+\abovedisplayshortskip0pt plus 0pt
+\belowdisplayskip2pt plus 0pt
+\belowdisplayshortskip0pt plus 0pt
+#1}}
+%
+\interfootnoteskip1pt
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Footline and headline
+%
+\newif\ifblankpage\blankpagefalse
+%
+% The footline contains the page number on the first page of a 
+% chapter; otherwise it is blank.
+%
+\footline{\ifblankpage\global\blankpagefalse\else
+   \ifchapopener \hfil\pagenofont\folio \else \hfil\fi\fi}
+%
+% Borrowed and modified from pictex.
+%
+\catcode`!=11
+%\def\!empty{}
+\def\!Nil{\!nil}
+\def\!noop#1\!!#2#3{}
+\def\dashnumber#1--{--#1}
+\def\dopageref#1--#2/{ \xrefn{indexpage:#1}%
+  \def\dashcheck{#2}\ifx\dashcheck\empty\else\dashnumber#2\fi}
+\def\!myfor#1:=#2\do#3{%
+  \edef\!fortemp{#2}%
+  \ifx\!fortemp\empty
+  \else
+    \!myforloop#2, \!nil, \!nil\!!#1{#3}%
+  \fi}
+\def\!myforloop#1, #2\!!#3#4{%
+  \def#3{#1}%
+  \ifx #3\!Nil
+    \let\!nextwhile=\!noop 
+  \else
+    #4\relax
+    \let\!nextwhile=\!myforloop
+  \fi
+  \!nextwhile#2\!!#3{#4}}
+\def\pagenowrapper#1{\def\commanext{}%
+    \!myfor\pageref:=#1\do{\commanext\expandafter\dopageref\pageref--/\def\commanext{,}}}
+\catcode`!=12
+
+%
+% The headline contains the page number on the outer corner of the
+% page. Usually, it contains also the chapter title on even pages
+% and the section title on odd pages. There are exceptions, and 
+% things are complicated by the fact that the word ``chapter'' is not
+% always an appropriate way to describe the current chapter-level 
+% object. Also, we have to use TeX ``marks'' to get the section name
+% right.
+%
+\def\makepagerdef#1.{\pagerdef{indexpage:#1}}
+\headline{%\vbox to 20pt{\hbox to \hsize{%
+   \edef\setpagerdef{\folio}%
+   \expandafter\makepagerdef\setpagerdef.%
+   \ifchapopener
+     \hfil
+   \else\ifblankpage
+     \global\blankpagefalse
+   \else\ifnum\chapnum<1
+      \ifthesis \hfil{\eightpoint\bf \chaptertitle}\kern1truepc
+         \pagenofont\folio
+      \else\ifodd\pageno \hfil{\eightpoint\bf \chaptertitle}\kern1truepc
+         \pagenofont\folio
+      \else
+         \pagenofont\folio\kern1truepc{\eightpoint\bf \chaptertitle}\hfil
+      \fi\fi
+   \else\ifx\chaptertitle\idxtitle
+      \ifthesis 
+        \hfil{\eightpoint\bf \chaptertitle}\kern1truepc\pagenofont\folio
+      \else\ifodd\pageno \hfil{\eightpoint\bf \chaptertitle}\kern1truepc
+        \pagenofont\folio
+      \else
+        \pagenofont\folio\kern1truepc{\eightpoint\bf \chaptertitle}\hfil
+      \fi\fi
+   \else\ifx\chapname\unletteredname
+      \ifthesis 
+        \hfil{\eightpoint\bf \chaptertitle}\kern1truepc\pagenofont\folio
+      \else\ifodd\pageno \hfil{\eightpoint\bf \chaptertitle}\kern1truepc
+        \pagenofont\folio
+      \else
+        \pagenofont\folio\kern1truepc{\eightpoint\bf \chaptertitle}\hfil
+      \fi\fi
+   \else
+      \ifthesis 
+        \hfil
+        \ifnum\secnum=0
+           {\eightpoint\bf \chapname \the\chapsymbol\enspace\chaptertitle}
+        \else
+           {\expandafter\secheader\botmark}
+        \fi
+        \kern1truepc\pagenofont\folio
+      \else\ifodd\pageno 
+        \hfil
+        \ifnum\secnum=0
+           {\eightpoint\bf \chapname \the\chapsymbol\enspace\chaptertitle}
+        \else
+           {\expandafter\secheader\botmark}
+        \fi
+        \kern1truepc\pagenofont\folio
+      \else \pagenofont\folio\kern1truepc
+            {\eightpoint\bf \chapname \the\chapsymbol\enspace
+             \chaptertitle}\hfil
+      \fi\fi
+   \fi\fi\fi\fi\fi}%\vfill}}
+%
+\def\secheader#1#2{%
+\ifnum#1=0
+\eightpoint\bf \chapname \the\chapsymbol\enspace\chaptertitle
+\else
+\secheaderfont\the\chapsymbol.#1 \enspace#2
+\fi}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Table of contents. The heavy lifting is done
+% by eplain.
+%
+\def\begincts{\vskip-26pt\bgroup\baselineskip14pt\parindent18pt}
+\newbox\chapnumbox
+\setbox\chapnumbox\hbox{\twelvepoint\bf 00.\enspace}
+\def\endcts{\egroup}
+%
+\def\ctsdotfill{{\tenpoint\rm\leaders\hbox{\kern3pt.\kern3pt}\hfill}}
+%
+% How to set a chapter entry in the toc. The first one is different
+% because we don't want any stretch above it, but the others are
+% allowed some stretch.
+%
+\def\tocctsentry#1#2#3{\relax }
+%
+\def\parmrelax{\relax }
+\newcount\tocchapnum\tocchapnum=0
+\def\tocchapterentry#1#2#3{\advance\tocchapnum by 1\goodbreak\vskip22pt
+\hbox to 44pt{\hfill\ctscnfont #2\hfill}\par\nointerlineskip\vskip6pt
+\hbox{\vrule height0.5pt width 44pt}\nobreak
+\nointerlineskip\vskip2pt%
+\leftline{\vbox{\hsize30pc\def\tocbreak{\hfill\break}%
+\twelvepoint\baselineskip14pt\bf\noindent\vrule height14pt width0pt
+#1\endgraf }%
+\hfill\elevenpoint\bf \xrefn{chappage:#1}}\nobreak
+\vskip4pt\global\let\tocchapterentry\regulartocchapterentry}
+%
+\def\regulartocchapterentry#1#2#3{%
+\def\parmtwo{#2}%
+\advance\tocchapnum by 1%
+\filbreak\vskip22pt plus6pt
+%\ifx#2\relax\nobreak\nointerlineskip\nobreak
+\ifx\parmtwo\parmrelax\nobreak\nointerlineskip\nobreak
+%\else{\ctscnfont #2}\par\nobreak\nointerlineskip\nobreak
+\else\hbox to 44pt{\hfill\ctscnfont #2\hfill}\par\nobreak\nointerlineskip\nobreak
+\vskip6pt\fi
+\hbox{\vrule height0.5pt width 44pt}\nobreak
+\nointerlineskip\vskip2pt%
+%\leftline{\vbox{\hsize21pc\def\tocbreak{\hfill\break}%
+\leftline{\vbox{\hsize30pc\def\tocbreak{\hfill\break}%
+\twelvepoint\baselineskip14pt\bf\noindent\vrule height14pt width0pt
+#1\endgraf }%
+%\hfill\elevenpoint\bf #3}\nobreak
+\hfill\elevenpoint\bf \xrefn{chappage:#1}}\nobreak
+\vskip4pt}
+%
+% How to set a section entry in the toc
+%
+\newbox\secnumbox
+\def\maketocsectionpageref#1/#2{\xrefn{secpage:#1-#2}}
+\setbox\secnumbox\hbox{{\bf 00.00}\kern1em}
+\def\tocsectionentry#1#2#3{%
+{\def\tocbreak{\hfil\egroup\hfil
+\egroup\baselineskip11pt\line\bgroup\indent\hbox to \wd\secnumbox
+{\hfil}\hbox to 0.8\hsize\bgroup}
+\line{\indent\hbox to \wd\secnumbox{\bf #2\hfil}%
+\hbox to 0.8\hsize{#1\ctsdotfill%\xrefn{secpage:\the\tocchapnum-#1}}\hfill}}}
+\expandafter\maketocsectionpageref\the\tocchapnum/{#1}}\hfill}}}
+%
+% How to set a subsection entry in the toc.
+%
+\newbox\subsecnumbox
+\setbox\subsecnumbox\hbox{{\bf 0.0.0}\kern1em}
+\newskip\subsecwidth
+\ifsubsectionsintoc
+  \def\tocsubsectionentry#1#2#3{%
+  {\subsecwidth=0.8\hsize
+%  \advance\subsecwidth by -\parindent
+  \advance\subsecwidth by -\wd\subsecnumbox
+%  \advance\subsecwidth by \wd\secnumbox
+  \def\tocbreak{\hfil\egroup\hfil
+  \egroup\baselineskip11pt\line\bgroup\indent\indent\hbox to \wd\subsecnumbox
+  {\hfil}\hbox to \subsecwidth\bgroup}
+  \line{\indent\indent\hbox to \wd\subsecnumbox{\bf
+  #2\hfil}\hbox to \subsecwidth{#1\ctsdotfill \xrefn{subsecpage:#1}}\hfill}}}
+\else
+  \def\tocsubsectionentry#1#2#3{\relax}
+\fi
+%
+\newdimen\briefwidth
+\briefwidth\hsize\advance\briefwidth by -\wd\chapnumbox
+%
+% Brief Contents
+%
+\def\beginbriefcts{\vskip-26pt\bgroup\twelvepoint\baselineskip18pt%
+\parindent0pt
+\def\tocchapterentry##1##2##3{%
+{%
+ \def\tocbreak{\hfil\egroup\hfil
+ \egroup\baselineskip14pt%
+ \line\bgroup\hbox to \wd\chapnumbox{\hfil}%
+ \hbox to \briefwidth\bgroup\bf}
+ %
+ \line{\hbox to \wd\chapnumbox{\hfil\bf ##2\ifx##2\relax\relax
+  \else.\fi\enspace}%
+% \hbox to \briefwidth{\bf ##1\hfill\elevenpoint\bf ##3}\hfill}%
+ \hbox to \briefwidth{\bf ##1\hfill\elevenpoint\bf \xrefn{chappage:##1}}\hfill}%
+}}
+%
+\let\tocctsentry\tocchapterentry
+%
+\def\tocsectionentry##1##2##3{\relax}%
+\def\tocsubsectionentry##1##2##3{\relax}%
+}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Index
+%
+% We generate two index files: a normal index and a ``theorem'' index.
+% The macros for theorem-like objects and figures write an entry for
+% each object in the tindex. This can be processed by makeindex and
+% used to create a separate index of all such items (as an appendix, say)
+% or it may be ignored.
+%
+%\makeatletter
+%
+%\@djustvsize={\number@fcolumns\baselineskip}
+%\l@stcolumnfill 0pt plus1fill
+%
+\makeatletter
+\@idxitemindent21pt
+\subitemindent\@idxitemindent \divide\subitemindent by 3
+\subsubitemindent\subitemindent \multiply\subsubitemindent by 2
+\makeatother
+%
+\makeindex
+\maketindex
+%
+\newbox\letterbox\newdimen\tempdepth
+%
+\def\firstitem#1{\setbox\letterbox\hbox{\idxfont\uppercase{#1}}
+\tempdepth\dp\letterbox
+\advance\tempdepth by \ht\letterbox
+\advance\tempdepth by -10pt
+\dp\letterbox=\tempdepth\ht\letterbox=10pt
+\leftline{\box\letterbox}\nobreak%
+\vskip 8pt plus 2pt minus2pt\nobreak\let\item\regularitem\item #1}
+%
+\def\beginletteredindex{\letteredindextrue\beginindex}
+%
+\makeatletter
+\def\beginindex{\vskip-24pt\begingroup\let\item\@idxitem\topskip10pt
+%
+%
+\@djustvsize={\number@fcolumns\baselineskip}
+\l@stcolumnfill 0pt plus1fill
+\normalbottom
+\def\pagecontents{\ifvoid\topins\else\unvbox\topins\fi
+  \dimen@=\dp\@cclv \unvbox\@cclv % open up \box255
+  \ifvoid\footins\else % footnote info is present
+    \vskip\skip\footins
+    \vfill
+    \footnoterule
+    \unvbox\footins\fi
+    \kern-\dimen@\vss}
+\ifletteredindex
+\def\indexspace{\par \vskip 10pt plus 2pt minus2pt\let\item\firstitem}
+\let\item\firstitem\let\regularitem\@idxitem
+\else
+\def\indexspace{\par\vskip 10pt plus10pt minus2pt}
+\fi
+%
+% we need to ignore the begin/end that makeindex puts into 
+% the index files.
+%
+\def\begin##1{}\def\end##1{}
+%
+% A high penalty for hyphens in the index
+%
+\hyphenpenalty1000\normalbottom
+\ninepoint\baselineskip10pt plus0.2pt minus0.1pt
+%
+\doublecolumns
+%
+% we set up a more extreme version of raggedright for the index
+%
+\rightskip0pt plus4em \spaceskip=.3333em\xspaceskip=.5em
+%
+\parskip0pt\parindent0pt\everypar{}
+}
+\makeatother
+%
+\def\endindex{\flushall\singlecolumn\endgroup\letteredindexfalse}
+%
+% To get a three column index, use \beginindex\tricol
+%
+\def\tricol{%
+\endcolumns%\vskip-24pt
+\triplecolumns\rightskip0pt plus4em \spaceskip=.3333em\xspaceskip=.5em
+\parskip0pt\parindent0pt\everypar{}}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Cross references
+%
+% Eplain provides only limited cross-referencing, while we want to 
+% cross-reference theorems, examples, exercises, lemmas...so we have 
+% to roll our own. The code is almost identical to eplain's page and 
+% equation cross reference macros.
+%
+% Eplain provides a single macro to cite any reference. Use
+%      \xrefn{thm:name}  or \xrefn{sec:name} or whatever to get the number
+% of the object.
+%
+%%%%%%%%%%%%%%%%%%%%
+%
+% xrefs for theorem-like objects; suggested usages:
+%       \thmrdef{thm:some good name for theorem}
+%       \thmrdef{lem:some good name for lemma}
+%
+% Since we number lemmas, theorems, etc, in one sequence, this will 
+% do for all.
+%
+\makeatletter
+\readauxfile
+\def\thmrdef#1{%
+  \@readauxfile
+  \begingroup
+    \xrlabel{#1}%
+    \edef\@wr{\@writethmrdef{\the\xrlabeltoks}}%
+    \@wr
+  \endgroup
+  \special{html:<a name="\the\xrlabeltoks">}\special{html:</a>}%
+  \ignorespaces
+}%
+\def\@writethmrdef#1{%
+  \@writeaux{%
+    \string\gdef\expandafter\string\csname#1\endcsname {\the\chapsymbol.\the\secnum.\the\thmnumber}%
+  }%
+}%
+%
+% xrefs for exercises; suggested usage:
+%          \exrdef{ex:name for exercise}
+%
+\def\exrdef#1{%
+  \@readauxfile
+  \begingroup
+    \xrlabel{#1}%
+    \edef\@wr{\@writeexrdef{\the\xrlabeltoks}}%
+    \@wr
+  \endgroup
+  \special{html:<a name="\the\xrlabeltoks">}\special{html:</a>}%
+  \ignorespaces
+}%
+\def\@writeexrdef#1{%
+  \@writeaux{%
+    \string\gdef\expandafter\string\csname#1\endcsname {\the\questnum}%
+  }%
+}%
+%
+% xrefs for sections; usage:
+%          \secrdef{sec:name of section}
+%
+\def\secrdef#1{%
+  \@readauxfile
+  \begingroup
+    \xrlabel{#1}%
+    \edef\@wr{\@writesecrdef{\the\xrlabeltoks}}%
+    \@wr
+  \endgroup
+  \special{html:<a name="\the\xrlabeltoks">}\special{html:</a>}%
+  \ignorespaces
+}%
+\def\@writesecrdef#1{%
+  \@writeaux{%
+    \string\gdef\expandafter\string\csname#1\endcsname
+     {\the\chapsymbol.\the\secnum}%
+  }%
+}%
+%
+% xrefs for subsections; usage:
+%          \subsecrdef{subsec:name of subsection}
+%
+\def\subsecrdef#1{%
+  \@readauxfile
+  \begingroup
+    \xrlabel{#1}%
+    \edef\@wr{\@writesubsecrdef{\the\xrlabeltoks}}%
+    \@wr
+  \endgroup
+  \special{html:<a name="\the\xrlabeltoks">}\special{html:</a>}%
+  \ignorespaces
+}%
+\def\@writesubsecrdef#1{%
+  \@writeaux{%
+    \string\gdef\expandafter\string\csname#1\endcsname
+     {\the\chapsymbol.\the\secnum.\the\subsecnum}%
+  }%
+}%
+%
+% xrefs for chapters; usage:
+%            \chaprdef{chap:chapter name}
+%
+\def\chaprdef#1{%
+  \@readauxfile
+  \begingroup
+    \xrlabel{#1}%
+    \edef\@wr{\@writechaprdef{\the\xrlabeltoks}}%
+    \@wr
+  \endgroup
+  \special{html:<a name="\the\xrlabeltoks">}\special{html:</a>}%
+  \ignorespaces
+}%
+\def\@writechaprdef#1{%
+  \@writeaux{%
+    \string\gdef\expandafter\string\csname#1\endcsname {\the\chapsymbol}%
+  }%
+}%
+%
+% xrefs for figures; usage:
+%            \figrdef{fig:figure name}
+%
+\def\figrdef#1{%
+  \@readauxfile
+  \begingroup
+    \xrlabel{#1}%
+    \edef\@wr{\@writefigrdef{\the\xrlabeltoks}}%
+    \@wr
+  \endgroup
+  \special{html:<a name="\the\xrlabeltoks">}\special{html:</a>}%
+  \ignorespaces
+}%
+\def\@writefigrdef#1{%
+  \@writeaux{%
+    \string\gdef\expandafter\string\csname#1\endcsname
+    {\the\chapsymbol.\the\secnum.\the\fignum}%
+  }%
+}%
+%
+% xrefs for equations; usage:
+%            \eqrdef{eq:equation name}
+%
+\def\eqrdef#1{%
+  \global\advance\eqnumber by 1%
+  \@readauxfile
+  \begingroup
+    \xrlabel{#1}%
+    \edef\@wr{\@writeeqrdef{\the\xrlabeltoks}}%
+    \@wr
+  \endgroup
+  \special{html:<a name="\the\xrlabeltoks">}\special{html:</a>}%
+  \ignorespaces
+}%
+\def\@writeeqrdef#1{%
+  \@writeaux{%
+    \string\gdef\expandafter\string\csname#1\endcsname
+    {\the\chapsymbol.\the\secnum.\the\eqnumber}%
+  }%
+}%
+%
+% xrefs for pagenumbers---the same as xrdef from eplain
+%
+\let\pagerdef\xrdef
+%
+\makeatother
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Title page
+%
+\newtoks\booktitle
+\newtoks\booksubtitle
+\newtoks\author
+\newtoks\institution
+\newtoks\department
+%
+\def\titlepage{
+\ifromanintro\pageno-1\fi
+\null\vskip30pt
+\hrule
+\vskip24pt
+\centerline{\vbox{%
+ \def\titlebreak{\break}\vfil\rightskip0pt plus1fill
+ \parskip0pt\parindent0pt\parfillskip0pt\baselineskip30truept
+ \leftskip0pt plus1fill{\booktitlefont\the\booktitle}\break%
+ {\booksubtitlefont\the\booksubtitle}\vfil}}
+\vskip24pt\hrule
+\vskip1truein
+\centerline{\authorfont\the\author}
+\vskip3truept
+\ifthesis
+\bsk
+\centerline{A thesis submitted in partial fulfillment of requirements}
+\centerline{for graduation with Honors in \the\department}
+\vfill
+\centerline{\institutionfont\the\institution}
+\centerline{\institutionfont\the\year}
+\else
+\centerline{\institutionfont\the\institution}
+\vfill
+\fi
+\blankpagetrue
+%
+% Put in the AW information only on camera-ready title pages
+%
+\eject
+}
+%
+\def\pubdata{%
+\ifcameraready
+  \input pubdata
+  \global\blankpagetrue
+\else
+  \input copyright
+  \global\blankpagetrue
+\fi
+\eject}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Chapters, sections, subsections
+%
+\newcount\chapnum \chapnum=0
+\newcount\appendixnum\appendixnum0
+\newcount\secnum
+\newcount\subsecnum
+\newtoks\chapsymbol                 % The number for a chapter, letter
+                                    % for an appendix
+\def\chapname{Chapter }
+\def\idxtitle{Index}
+\def\unletteredname{unlettered}
+\def\nothing{\relax}
+%\let\testnothing=\nothing\show\testnothing
+%
+% Every chapter should start with \chapter{Title}
+%
+\newdimen\chaprulewidth\newdimen\chapruleindent
+\newdimen\chapruledepth
+\ifcameraready
+\chapruleindent18pt
+\else
+\chapruleindent72pt
+\fi
+%
+\chaprulewidth\hsize\advance\chaprulewidth by -2\chapruleindent
+\chapruledepth0pt
+%
+\def\bookmarkc#1{\special{pdf:out 1 << /Title (#1) /Dest [ @thispage /FitH @ypos ] >>}}
+\def\bookmarks#1{\special{pdf:out 2 << /Title (#1) /Dest [ @thispage /FitH @ypos ] >>}}
+%
+\def\chapter#1{
+          \vfill\supereject              % new chapter starts on a new page
+          \ifodd\pageno\else
+            \ifprintblankpages\ \global\blankpagetrue
+            \else\global\blankpagefalse\global\advancepageno
+            \fi
+            \vfill\eject\fi % start on an odd page
+          \ifnum\chapnum > -1 
+                \advance\chapnum by 1 \secnum=0 \fignum=1 \eqnumber=0
+                \bookmarkc{\the\chapnum. #1}\chapsymbol={\the\chapnum}
+                \ifromanintro\ifnum\chapnum=1\pageno=1\fi\fi % stop roman numeral page numbers
+                \def\sectiontitle{}\def\chaptertitle{#1}
+                \null\ifx\chaptertitle\idxtitle\vskip75truept
+                \else\vskip33truept
+                \centerline{\chapnumberfont\the\chapsymbol}
+%                \immediate\write\solns{\string\chapter{#1}}
+                \unexpandedwrite\solns{\chapter{#1}}
+                \vskip1truepc\fi
+                \nointerlineskip\line{\kern\chapruleindent\vrule height0truept
+                  depth\chapruledepth width\chaprulewidth\hfill}\nointerlineskip
+                \centerline{\vbox to 5.5truepc{%
+                  \def\titlebreak{\break}\vfil\rightskip0pt plus1fil
+                  \parskip0pt\parindent0pt\parfillskip0pt\baselineskip26truept
+                  \leftskip0pt plus1fil{\chaptitlefont #1}\vfil}}
+                \nointerlineskip\line{\kern\chapruleindent\vrule height0truept
+                  depth\chapruledepth width\chaprulewidth\hfill}\nointerlineskip
+                \vskip112truept
+          \else % chapter number < 0
+                \advance\chapnum by 1 \secnum=0
+                \bookmarkc{#1}\def\chaptertitle{#1}
+                \null\vskip75truept
+                \nointerlineskip\line{\kern\chapruleindent\vrule height0truept
+                  depth\chapruledepth width\chaprulewidth\hfill}\nointerlineskip
+                \centerline{\vbox to 5.5truepc{%
+                  \def\titlebreak{\break}\vfil
+                  \centerline{\chaptitlefont #1}\vfil}}
+                \nointerlineskip\line{\kern\chapruleindent\vrule height0truept
+                  depth\chapruledepth width\chaprulewidth\hfill}\nointerlineskip
+                \vskip112truept
+          \fi
+          \footnotenumber=0\thmnumber=0
+          \global\chapopenertrue\global\chapstarttrue
+%
+% We don't put prefatory chapters into the toc, but it would be easy
+% to do so here.
+%
+          \ifnum\chapnum > 0
+                  \ifx\chaptertitle\idxtitle
+                    % \nothing is a necessary kludge
+                    \writenumberedtocentry{chapter}{#1}{\nothing}
+                  \else
+                    \writenumberedtocentry{chapter}{#1}{\the\chapsymbol}
+                  \fi
+          \fi
+          \parindent0pt
+          \mark{{\the\secnum}{\null}}
+          \pagerdef{chappage:#1}
+          }
+%
+\def\appendix#1{
+          \vfill\supereject             % new chapter starts on a new page
+          \global\def\chapname{Appendix }
+          \ifodd\pageno\else
+            \ifprintblankpages\ \global\blankpagetrue
+            \else\global\blankpagefalse\global\advance\pageno by 1
+            \fi
+            \vfill\eject\fi % start on an odd page
+          \advance\chapnum by 1%
+          \advance\appendixnum by 1 \secnum=0 \fignum=1
+          \def\sectiontitle{}\def\chaptertitle{#1}
+          \makeappendixletter
+          \edef\realsymbol{\the\chapsymbol}
+          \bookmarkc{\realsymbol. #1}
+          \null\vskip32truept
+          \centerline{\chapnumberfont\the\chapsymbol}
+          \vskip1truepc
+          \nointerlineskip\line{\kern\chapruleindent\vrule height0truept
+            depth\chapruledepth width\chaprulewidth\hfill}\nointerlineskip
+          \centerline{\vbox to 5.5truepc{%
+                  \def\titlebreak{\break}\vfil\rightskip0pt plus1fil
+            \parskip0pt\parindent0pt\parfillskip0pt\baselineskip26truept
+            \leftskip0pt plus1fil{\chaptitlefont #1}\vfil}}
+          \nointerlineskip\line{\kern\chapruleindent\vrule height0truept
+            depth\chapruledepth width\chaprulewidth\hfill}\nointerlineskip
+          \vskip112truept
+          \thmnumber=0\footnotenumber=0
+          \global\chapopenertrue\global\chapstarttrue
+          \writenumberedtocentry{chapter}{#1}{\the\chapsymbol}
+          \parindent0pt
+          \pagerdef{chappage:#1}
+          }
+%
+\def\unletteredappendix#1{
+          \vfill\supereject              % new chapter starts on a new page
+          \global\def\chapname{unlettered}
+          \ifodd\pageno\else
+              \ifprintblankpages\ \global\blankpagetrue
+              \else\global\blankpagefalse\global\advance\pageno by 1
+              \fi
+              \vfill\eject
+          \fi % start on an odd page  
+          \bookmarkc{#1}
+          \advance\appendixnum by 1 \secnum=0 \fignum=1
+          \def\sectiontitle{}\def\chaptertitle{#1}\chapsymbol{#1}
+          \null\vskip75truept
+          \nointerlineskip\line{\kern\chapruleindent\vrule height0truept
+            depth\chapruledepth width\chaprulewidth\hfill}\nointerlineskip
+          \centerline{\vbox to 5.5truepc{%
+                  \def\titlebreak{\break}\vfil\rightskip0pt plus1fil
+            \parskip0pt\parindent0pt\parfillskip0pt\baselineskip26truept
+            \leftskip0pt plus1fil{\chaptitlefont #1}\vfil}}
+          \nointerlineskip\line{\kern\chapruleindent\vrule height0truept
+            depth\chapruledepth width\chaprulewidth\hfill}\nointerlineskip
+          \vskip112truept
+          \thmnumber=0\footnotenumber=0
+          \global\chapopenertrue\global\chapstarttrue
+          \writenumberedtocentry{chapter}{#1}{\nothing}
+          \parindent0pt
+          \pagerdef{chappage:#1}
+          }
+%
+\def\makeappendixletter{\chapsymbol=
+  {\ifcase\appendixnum\or A\or B\or C\or D\or E\or F\or G\or H\or I\or J\or K
+  \or L\or M\or N\or O\or P\or Q\or R\or S\or Y\or U\or V\or W\or X\or
+  Y\or Z
+\fi}}
+%
+\def\empty{}
+%
+\newbox\secnumberbox
+\def\makesecpagedef#1/#2{\pagerdef{secpage:#1#2}}
+\def\section#1#2#3{\advance\secnum by 1
+               \unexpandedwrite\solns{\section{#1}}
+%               \immediate\write\solns{\string\section{\tempsectionname}}
+               \def\sectiontitle{#1}\subsecnum=0
+               \ifchapstart
+                 \vskip-2pt
+               \else
+               \ifexerciseflag
+                 \ifdim\abovesectionskip>\afterexerciseskip
+                   \vskip-\afterexerciseskip
+                   \vskip\abovesectionskip
+                 \fi
+               \else\ifproofflag
+                 \ifdim\abovesectionskip>\afterproofskip
+                   \vskip-\afterproofskip
+                   \vskip\abovesectionskip
+                 \fi
+               \else\iflistflag
+                 \ifdim\abovesectionskip>\afterlistskip
+                   \vskip-\afterlistskip
+                   \vskip\abovesectionskip
+                 \fi
+               \else
+                   \vskip\abovesectionskip
+               \fi\fi\fi
+               \fi
+               \def\runningsectiontitle{#2}
+               \ifx\runningsectiontitle\empty\def\runningsectiontitle{#1}\fi
+               \def\bookmarkstitle{#3}
+               \ifx\bookmarkstitle\empty\let\bookmarkstitle\runningsectiontitle\fi
+               {%
+                  \setbox\secnumberbox\hbox{\secfont
+                    \the\chapsymbol.\the\secnum\kern1em}
+                  \def\titlebreak{\hfil\egroup\nobreak\baselineskip12pt%
+                    \line\bgroup\hbox to \wd\secnumberbox{\hfil}\secfont }
+                  \goodbreak\bookmarks{\the\secnum. \bookmarkstitle}%
+                    \line{\copy\secnumberbox\secfont #1\hfil%
+                    \writenumberedtocentry{section}{#1}
+                    {\the\chapsymbol.\the\secnum}}%
+               }%
+               \edef\setsecpagerdef{\the\chapnum-}
+               \expandafter\makesecpagedef\setsecpagerdef/{#1}%
+               \fignum=1\thmnumber=0\eqnumber=0%\pagerdef{secpage:#1}
+               \mark{{\the\secnum}{\runningsectiontitle}}\nobreak\vskip6pt\nobreak\parindent0pt}
+%
+\newbox\subsecnumberbox
+\def\subsection#1{\advance\subsecnum by 1
+               \def\subsectiontitle{#1}
+               \ifexerciseflag
+                 \ifdim\abovesubsectionskip>\afterexerciseskip
+                   \vskip-\afterexerciseskip
+                   \vskip\abovesubsectionskip
+                 \fi
+               \else\ifproofflag
+                 \ifdim\abovesubsectionskip>\afterproofskip
+                   \vskip-\afterproofskip
+                   \vskip\abovesubsectionskip
+                 \fi
+               \else\iflistflag
+                 \ifdim\abovesubsectionskip>\afterlistskip
+                   \vskip-\afterlistskip
+                   \vskip\abovesubsectionskip
+                 \fi
+               \else
+                   \vskip\abovesubsectionskip
+               \fi\fi\fi
+               {%
+                  \setbox\subsecnumberbox\hbox{\subsecfont
+                    \the\chapsymbol.\the\secnum.\the\subsecnum\kern1em}
+                  \def\titlebreak{\hfil\egroup\nobreak\baselineskip12pt%
+                    \line\bgroup\hbox to \wd\subsecnumberbox{\hfil}%
+                    \subsecfont }
+                  \line{\copy\subsecnumberbox\subsecfont #1\hfil%
+                    \writenumberedtocentry{subsection}{#1}
+                    {\the\chapsymbol.\the\secnum.\the\subsecnum}}%
+               }%
+               \pagerdef{subsecpage:#1}
+               \nobreak\vskip6pt\nobreak\parindent0pt}
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Exercises 
+%
+\newcount\questnum
+\def\question{\global\advance\questnum by 1 \bf\the\questnum .}
+%
+% \def\items#1#2{\par\noindent \hangindent48pt
+% \hbox to \parindent{\hss{\bf #1}\enspace}\ignorespaces
+% \hbox to 16pt{\hss{\bf #2}\enspace}\ignorespaces}
+%
+% \newdimen\secondindent
+% \secondindent\exerciselistindentamount\advance\secondindent by -\parindent
+% \def\items#1#2{\par\noindent \hangindent\exerciselistindentamount
+% \hbox to \parindent{\hss{\bf #1}\enspace}\ignorespaces%
+% \hbox to \secondindent{\hss{\bf #2}\enspace}\ignorespaces}
+%
+% \def\doubleitem#1#2#3#4{\par\noindent\indent\llap{{\bf #1}\enspace}\hbox to
+% 2in{#2\hfill}\llap{{\bf #3}\enspace}#4}
+\newdimen\halfhsize
+\def\doubleitem#1#2#3#4{\par\halfhsize\hsize\divide\halfhsize by 2%
+%\advance\halfhsize by -30pt%
+\noindent\indent\llap{{\bf #1}\enspace}\hbox to
+\halfhsize{#2\hfill}\llap{{\bf #3}\enspace}#4}
+%
+\def\tripleitem#1#2#3#4#5#6{\par\noindent\indent
+\llap{{\bf #1}\enspace}\hbox to 1.5in{#2\hfill}%
+\llap{{\bf #3}\enspace}\hbox to 1.5in{#4\hfill}%
+\llap{{\bf #5}\enspace}#6}
+%
+\newbox\leftbox
+\newbox\leftno
+\newbox\rightno
+\newbox\rightbox
+\newif\ifleftcol
+
+\def\twocol{\bgroup\global\leftcoltrue
+\def\exercise{\par\ifleftcol
+\global\setbox\leftno\hbox{\question}
+\global\setbox\leftbox=\hbox\bgroup\def\par{\egroup
+\global\leftcolfalse}
+\else
+\setbox\rightno\hbox{\question}
+\setbox\rightbox=\hbox\bgroup\def\par{\egroup
+\global\leftcoltrue
+\doubleitem{\unhbox\leftno}{\unhbox\leftbox}{\unhbox\rightno}{\unhbox\rightbox}}
+\fi}}
+\def\endtwocol{\par\egroup
+\ifleftcol\else
+\doubleitem{\unhbox\leftno}{\unhbox\leftbox}{}{}
+\fi}
+%
+\def\exercise{\par\parindent20pt
+\ifexerciseremarkflag
+  \ifdim\exerciseseparationskip>\afterexerciseremarkskip
+    \vskip-\afterexerciseremarkskip
+  \else
+    \vskip-\exerciseseparationskip
+  \fi
+\else\iflistflag
+    \vskip-\afterexerciselistskip
+\fi\fi
+\item{\question}}
+%
+\newif\ifexhead
+\exheadtrue
+\def\exercises{\futurelet\lookahead\xcheck}
+\def\swallowstar#1{\xercises}
+\def\xcheck{\if\lookahead*\global\exheadfalse\let\next\swallowstar\else%
+        \global\exheadtrue\let\next\xercises\fi\next}
+\def\xercises{\questnum0
+      \ifexerciseflag
+        \ifdim\beforeexerciseskip>\afterexerciseskip
+          \vskip-\afterexerciseskip
+          \vskip\beforeexerciseskip
+        \fi
+      \else\ifproofflag
+        \ifdim\beforeexerciseskip>\afterproofskip
+          \vskip-\afterproofskip
+          \vskip\beforeexerciseskip
+        \fi
+      \else\iflistflag
+        \ifdim\beforeexerciseskip>\afterlistskip
+          \vskip-\afterlistskip
+          \vskip\beforeexerciseskip
+        \fi
+      \else
+          \vskip\beforeexerciseskip
+      \fi\fi\fi
+%      \vskip 0pt plus 50pt
+%      \penalty-500
+       \goodbreak
+      \ifexhead\leftline{\exerciseheadfont Exercises \the\chapsymbol.\the\secnum.}%
+      \nobreak\vskip4truept\fi\nobreak\bgroup
+      \iftimes\ninehalfpoint\else\ninepoint\fi
+      \let\beginlist\beginexerciselist
+      \let\endlist\endexerciselist
+      \let\remark\exerciseremark
+      \let\endremark\endexerciseremark
+      \parindent0pt
+      \parskip\exerciseseparationskip
+      \abovedisplayskip4pt\belowdisplayskip4pt}
+%
+\def\endexercises{%
+\egroup\global\exerciseflagtrue\vskip\afterexerciseskip\bigbreak}
+%
+\def\exerciseremark#1{\par
+\iflistflag\vskip-\afterexerciselistskip\fi
+\vskip-\exerciseseparationskip
+\vskip\beforeexerciseremarkskip
+\noindent{\bf #1.}\kern1pc\bgroup\ignorespaces}
+%
+\def\endexerciseremark{\egroup\global\exerciseremarkflagtrue
+\vskip\afterexerciseremarkskip}
+%
+\def\beginexerciselist{\par\nobreak\bgroup
+\parindent\exerciselistindentamount
+\parskip\exerciselistseparationskip
+\vskip\beforeexerciselistskip
+\vskip-\exerciselistseparationskip
+%
+\def\textindent##1{\indent\llap{{\bf ##1}\enspace}\ignorespaces}}
+%
+\def\endexerciselist{\par\egroup\global\listflagtrue
+  \vskip\afterexerciselistskip}
+\let\endexercise\relax
+\def\ansno#1.#2.#3:{\smallbreak\noindent\hang
+  \hbox to\parindent{\hss
+  \special{html:<a name="#1.#2.#3">}\special{html:</a>}%
+  \bf#1.#2.#3.\enspace}\ignorespaces}
+%\def\ansno#1.#2.#3:{\smallbreak
+%  \item{\bf#1.#2.#3.}\ignorespaces}
+\newwrite\ans
+\newwrite\solns
+\newif \ifwritinganswers
+\writinganswersfalse
+\immediate\openout\ans=\jobname.answers % file for answers to exercises
+\immediate\openout\solns=\jobname.solutions % file for answers to exercises
+\immediate\write\ans{\string\relax}
+\immediate\write\ans{\string\tolerance10000}
+\immediate\write\ans{\string\doublecolumns}
+\immediate\write\ans{\string\rightskip10pt\space plus\space 2em}
+\font\msymbten miscsymbols10 at 10truept
+%\outer\long\def\answer{%\par\medbreak
+\long\def\answer{%\par\medbreak
+  \pdflink{\the\chapnum.\the\secnum.\the\questnum}$\Rightarrow$\endpdflink
+  \immediate\write\ans{}
+  \immediate\write\ans{\string\ansno\the\chapnum.\the\secnum.\the\questnum:}
+  \copytoendofanswer}
+\long\def\solution{%
+  \immediate\write\solns{}
+  \immediate\write\solns{\string\ansno\the\chapnum.\the\secnum.\the\questnum:}
+  \copytoendofsolution}
+\outer\long\def\noanswer{%
+  \immediate\write\ans{}
+  \immediate\write\ans{\percent\string\ansno\the\chapnum.\the\secnum.\the\questnum:}
+  \ignoretoendofanswer}
+%%
+\def\copytoendofanswer{\begingroup\setupcopy\copyans}
+\def\copytoendofsolution{\begingroup\setupcopysolution\copysolution}
+\def\ignoretoendofanswer{\begingroup\setupcopy\ignoreans}
+\def\setupcopy{\def\do##1{\catcode`##1=\other}\dospecials\catcode`\^=12
+  \catcode`\|=\other \obeylines}
+{\catcode`\|=0\catcode`\\=\other
+|gdef|closeanswer{\endanswer}}
+{\obeylines \gdef\copyans#1
+  {\def\next{#1}%
+  \ifx\next\closeanswer\let\next=\endgroup %
+  \else\immediate\write\ans{\next}\let\next=\copyans\fi\next}}
+{\obeylines \gdef\ignoreans#1
+  {\def\next{#1}%
+  \ifx\next\closeanswer\let\next=\endgroup %
+  \else\immediate\write\ans{\percent\next}\let\next=\ignoreans\fi\next}}
+\def\setupcopysolution{\def\do##1{\catcode`##1=\other}\dospecials\catcode`\^=12
+  \catcode`\|=\other \obeylines}
+{\catcode`\|=0\catcode`\\=\other
+|gdef|closesolution{\endsolution}}
+{\obeylines \gdef\copysolution#1
+  {\def\next{#1}%
+  \ifx\next\closesolution\let\next=\endgroup %
+  \else\immediate\write\solns{\next}\let\next=\copysolution\fi\next}}
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Suggested references 
+%
+%
+\def\suggestedreferences{
+               \ifexerciseflag
+                 \ifdim\beforereferenceskip>\afterexerciseskip
+                   \vskip-\afterexerciseskip
+                   \vskip\beforereferenceskip
+                 \fi
+               \else\ifproofflag
+                 \ifdim\beforereferenceskip>\afterproofskip
+                   \vskip-\afterproofskip
+                   \vskip\beforereferenceskip
+                 \fi
+               \else\iflistflag
+                 \ifdim\beforereferenceskip>\afterlistskip
+                   \vskip-\afterlistskip
+                   \vskip\beforereferenceskip
+                 \fi
+               \else
+                   \vskip\beforereferenceskip
+               \fi\fi\fi
+               \leftline{\referenceheadfont Suggested References}%
+               \nobreak\vskip3truept\nobreak\bgroup
+               \iftimes\ninehalfpoint\else\ninepoint\fi
+               \parindent0pt
+               \everypar{\hangafter1\hangindent\basalparindent}
+               }
+%
+\def\endsuggestedreferences{%
+\egroup\global\exerciseflagtrue\vskip\afterexerciseskip}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Extracts 
+%
+\def\extract{\bgroup\advance\leftskip\extractindentamount
+  \advance\rightskip\extractindentamount\parindent0pt
+  \vskip\aboveextractskip\it }
+\def\endextract{\egroup\global\proofflagtrue\vskip\belowextractskip}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Lists 
+%
+\def\beginlist{\par\nobreak\bgroup\questnum0\parindent\listindentamount
+\parskip\listseparationskip
+\ifexerciseflag
+  \ifdim\beforelistskip>\afterexerciseskip
+    \vskip-\afterexerciseskip
+    \vskip\beforelistskip
+    \vskip-\listseparationskip
+  \fi
+\else\ifproofflag
+  \ifdim\beforelistskip>\afterproofskip
+    \vskip-\afterproofskip
+    \vskip\beforelistskip
+    \vskip-\listseparationskip
+  \fi
+\else\iflistflag
+  \ifdim\beforelistskip>\afterlistskip
+    \vskip-\afterlistskip
+    \vskip\beforelistskip
+    \vskip-\listseparationskip
+  \fi
+\else
+  \vskip\beforelistskip
+  \vskip-\listseparationskip
+\fi\fi\fi
+%
+\def\textindent##1{\indent\llap{{\bf ##1}\enspace}%
+\ignorespaces\checklisttitle}}
+%
+\def\endlist{\par\egroup\global\listflagtrue\vskip\afterlistskip}
+%
+\def\checklisttitle#1{\if#1(\listtitle\else#1\fi}
+\def\listtitle#1){{\it #1}\enspace}
+%
+\def\beginclaimlist{\par\nobreak\bgroup
+\ifexerciseflag
+  \ifdim\beforeclaimlistskip>\afterexerciseskip
+    \vskip-\afterexerciseskip
+    \vskip\beforeclaimlistskip
+    \vskip-\claimlistseparationskip
+  \fi
+\else\ifproofflag
+  \ifdim\beforeclaimlistskip>\afterproofskip
+    \vskip-\afterproofskip
+    \vskip\beforeclaimlistskip
+    \vskip-\claimlistseparationskip
+  \fi
+\else\iflistflag
+  \ifdim\beforeclaimlistskip>\afterlistskip
+    \vskip-\afterlistskip
+    \vskip\beforeclaimlistskip
+    \vskip-\claimlistseparationskip
+  \fi
+\else
+    \vskip\beforeclaimlistskip
+    \vskip-\claimlistseparationskip
+\fi\fi\fi
+%
+\def\item##1{\vskip\claimlistseparationskip
+\noindent{\remarksfont ##1.}\kern1pc\ignorespaces}%
+}
+%
+\def\endclaimlist{\par\egroup\global\proofflagtrue\vskip\afterclaimlistskip}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Output routine; supplies registration marks
+%
+\newcount\bighand\newcount\littlehand
+\bighand=\time\divide\bighand by 60
+\littlehand=\bighand\multiply\littlehand by -60
+\advance\littlehand by\time
+\output{\normaloutput}
+\makeatletter
+% Kludge to fix problem with tikz:
+\newbox\my@utputbox
+%
+\ifcameraready
+\def\normaloutput{%
+  \hoffset=0pt\voffset=-0.5truein
+  \ifodd\pageno\lm=\oddlm\else\lm=\evenlm\fi%
+  \setbox\my@utputbox\vbox{%
+      \hbox to \pagewidth{\tenpoint%
+        \vrule width0.4truept height0.25truein depth0.15truein
+        \quad\jobname.tex run at \the\bighand:\ifnum\littlehand<10{0}\fi
+        \the\littlehand\ on \the\month/\the\day/\the\year
+        \hfill\tenrm\folio\quad\vrule width0.4truept}
+      \nointerlineskip\kern0.1truein
+      \hbox to \pagewidth{\llap{\vrule height0.4truept 
+        width0.4truein \kern0.1truein}\hfill%
+      \rlap{\kern0.1truein \vrule height0.4truept width0.4truein}}
+      \nointerlineskip
+      \hbox{\hskip\lm\vbox to \pageheight{%
+      \makeheadline\pagebody\makefootline\vfill}}
+      \nointerlineskip
+      \hbox to \pagewidth{\llap{\vrule height0.4truept
+        width0.4truein\kern0.1truein}\hfill%
+      \rlap{\kern0.1truein \vrule height0.4truept width0.4truein}}
+      \nointerlineskip\kern0.1truein
+      \hbox to \pagewidth{\vrule width0.4truept height0pt 
+        depth0.4truein\hfill\vrule width0.4truept height0pt depth0.4truein}
+    }
+  \shipout\box\my@utputbox%
+  \advancepageno\global\chapopenerfalse
+  \ifnum\outputpenalty>-\@MM \else\dosupereject\fi}
+\def\pagecontents{\ifvoid\topins\else\unvbox\topins\fi
+  \dimen@=\dp\@cclv \unvbox\@cclv % open up \box255
+  \ifvoid\footins\else % footnote info is present
+    \vskip\skip\footins
+    \vfill
+    \footnoterule
+    \unvbox\footins\fi
+  \ifr@ggedbottom \kern-\dimen@ \vskip\bottomskip \fi}
+%
+\def\makeheadline{\setbox\headbox\vbox to 0.625truein{\vfill
+  \line{\the\headline}}\copy\headbox\vskip-\dp\headbox\nointerlineskip}
+\def\makefootline{\baselineskip24\p@\line{\the\footline}}
+%
+\else\ifthesis            % thesis
+%
+\def\normaloutput{%
+%%  \shipout\vbox{\makeheadline\pagebody\makefootline}%
+  \setbox\my@utputbox\vbox{\makeheadline\pagebody\makefootline}%
+  \shipout\box\my@utputbox%
+  \advancepageno\global\chapopenerfalse
+  \ifnum\outputpenalty>-\@MM \else\dosupereject\fi}
+\def\pagecontents{\ifvoid\topins\else\unvbox\topins\fi
+  \dimen@=\dp\@cclv \unvbox\@cclv % open up \box255
+  \ifvoid\footins\else % footnote info is present
+    \vskip\skip\footins
+    \vfill
+    \footnoterule
+    \unvbox\footins\fi
+  \ifr@ggedbottom \kern-\dimen@ \vfil \fi}
+\def\makeheadline{\setbox\headbox\vbox to 0truept{\vss
+  \line{\the\headline}}\copy\headbox\vskip-\dp\headbox\nointerlineskip}
+\def\makefootline{\baselineskip24\p@\line{\the\footline}}
+%
+\else
+%
+\def\normaloutput{%
+  \ifodd\pageno\hoffset=\pageshift\else\hoffset=-\pageshift\fi%
+%%  \shipout\vbox{\makeheadline\pagebody\makefootline}%
+  \setbox\my@utputbox\vbox{\makeheadline\pagebody\makefootline}%
+  \shipout\box\my@utputbox%
+  \advancepageno\global\chapopenerfalse
+  \ifnum\outputpenalty>-\@MM \else\dosupereject\fi}
+%% \def\pagecontents{\ifvoid\topins\else\unvbox\topins\fi
+%%   \dimen@=\dp\@cclv \unvbox\@cclv % open up \box255
+%%   \ifvoid\footins\else % footnote info is present
+%%     \vskip\skip\footins
+%%     \vfill
+%%     \footnoterule
+%%     \unvbox\footins\fi
+%%   \ifr@ggedbottom \kern-\dimen@ \vfil \fi}
+%% \def\makeheadline{\setbox\headbox\vbox to 0truept{\vss
+%%   \line{\the\headline}}\copy\headbox\vskip-\dp\headbox\nointerlineskip}
+%% \def\makefootline{\baselineskip24\p@\line{\the\footline}}
+\fi\fi
+\makeatother
+\newbox\headbox
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Theorem-like objects: They are numbered automatically,
+% and they generate an index entry. To get makeindex to sort them properly,
+% we need to use this kludgy "thmcounter" to control the order they go in the
+% index. The theorem objects are counted consectutively throughout the book.
+% They will be "invisibly numbered" starting with 1000, and will be ok as 
+% long as the counter doesn't go above 9999. 
+%
+% Figures are counted with the invisible counter as well.
+%
+\newcount\thmcounter \thmcounter=999
+%
+% Now the actual number of the theorem, lemma, etc, in the chapter. We number
+% all such objects in a single numbering scheme (but not figures).
+%
+\newcount\thmnumber
+\newbox\highlightbox
+\def\thm{\thmobject{Theorem}}
+\def\rule{\thmobject{Rule}}
+\def\axiom{\thmobject{Axiom}}
+\def\lem{\thmobject{Lemma}}
+\def\prop{\thmobject{Proposition}}
+\def\cor{\thmobject{Corollary}}
+\def\defn{\thmobject{Definition}}
+\def\example{\thmobject{Example}}
+\long\def\thmobject#1#2{%
+\global\advance\thmcounter by 1\global\advance\thmnumber by 1
+\ifexerciseflag
+  \ifdim\beforethmskip>\afterexerciseskip
+    \vskip-\afterexerciseskip
+    \vskip\beforethmskip
+  \fi
+\else\ifproofflag
+  \ifdim\beforethmskip>\afterproofskip
+    \vskip-\afterproofskip
+    \vskip\beforethmskip
+  \fi
+\else\iflistflag
+  \ifdim\beforethmskip>\afterlistskip
+    \vskip-\afterlistskip
+    \vskip\beforethmskip
+  \fi
+\else
+    \vskip\beforethmskip
+\fi\fi\fi
+%\setbox\highlightbox\vbox\begingroup
+\noindent{\thmfont \uppercase{#1}
+\tindex{#1 \the\thmcounter@#1 %
+%\the\chapsymbol.\the\secnum.\the\thmnumber}\the\chapsymbol.\the\secnum.\the\thmnumber}\kern1pc
+\the\chapsymbol.\the\secnum.\the\thmnumber}\the\chapsymbol.\the\secnum.\the\thmnumber}\hskip 1pc minus 4pt
+\if#2(\thmtitle\else\bgroup#2\thmstmtfont\fi}
+\def\thmtitle#1){{\thmfont #1}\kern1pc\bgroup\thmstmtfont}
+%
+% End proofs and unproved theorems with a box at the right margin.
+% Usage: ...end of proof.~\qed
+%
+\newskip\saveparfillskip
+\def\qed{\saveparfillskip\parfillskip%
+\parfillskip0pt\penalty10000\hfill\kern1pc\vrule height5pt width5pt
+depth0pt\par%
+\parfillskip\saveparfillskip\egroup\global\proofflagtrue\vskip\afterproofskip}
+\let\endproof\qed
+\let\endthmnoproof\qed
+%
+% \openendbox provides an open box for the end of a theorem statement, if
+% the proof does not follow immediately, and for other thm-like objects.
+%
+\def\openendbox{\saveparfillskip\parfillskip%
+\parfillskip0pt\penalty10000\hfill\kern1pc%
+\vbox{\hsize5pt
+\hrule\hbox to \hsize{\vrule height4.2pt\hfill\vrule}\hrule}
+\par%
+\parfillskip\saveparfillskip\egroup\global\proofflagtrue\vskip\afterproofskip}
+%\def\endthm{\egroup\global\proofflagtrue
+%  \iflistflag
+%    \endgraf\vskip-\afterlistskip
+%  \fi
+%  \vskip\afterproofskip}
+%
+\let\endthm\relax
+\let\endlem\relax
+\let\endthmlaterproof\openendbox
+\let\enddef\openendbox
+\let\endexample\openendbox
+\let\endaxiom\openendbox
+\let\endrule\openendbox
+%
+\def\proof{\par\egroup\vskip6pt\noindent{\prooffont Proof.}\kern1pc\bgroup}
+%\def\proof{\vskip6pt\noindent{\prooffont Proof.}\kern1pc\bgroup}
+\def\detachedproof#1{\vskip6pt\noindent{\prooffont #1}\kern1pc\bgroup}
+%
+%\def\solution{\par\egroup\vskip6pt\noindent{\prooffont Solution.}%
+%\kern1pc\bgroup}
+%
+\def\remark#1{\par
+\ifexerciseflag
+  \ifdim\beforeclaimlistskip>\afterexerciseskip
+    \vskip-\afterexerciseskip
+    \vskip\beforeclaimlistskip
+  \fi
+\else\ifproofflag
+  \ifdim\beforeclaimlistskip>\afterproofskip
+    \vskip-\afterproofskip
+    \vskip\beforeclaimlistskip
+  \fi
+\else\iflistflag
+  \ifdim\beforeclaimlistskip>\afterlistskip
+    \vskip-\afterlistskip
+    \vskip\beforeclaimlistskip
+  \fi
+\else
+    \vskip\beforeclaimlistskip
+\fi\fi\fi
+\noindent{\remarksfont #1.}\kern1pc\bgroup\ignorespaces}
+%
+\def\endremark{\egroup\global\proofflagtrue\vskip\afterclaimlistskip}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Figures
+%
+%\makeatletter
+%\def\endinsert{\egroup % finish the \vbox
+%  \if@mid \dimen@\ht\z@ \advance\dimen@\dp\z@
+%    \advance\dimen@\pagetotal
+%    \ifdim\dimen@>\pagegoal\@midfalse\p@gefalse\fi\fi
+%  \if@mid \box\z@\vskip12pt%
+%  \else\insert\topins{\penalty100 % floating insertion
+%    \splittopskip\z@skip
+%    \splitmaxdepth\maxdimen \floatingpenalty\z@
+%    \ifp@ge \dimen@\dp\z@
+%    \vbox to\vsize{\unvbox\z@\kern-\dimen@}% depth is zero
+%    \else \box\z@\nobreak\fi}\fi\endgroup}
+%\makeatother
+%
+%
+%\def\figure{\topinsert\vskip\topskip\hbox to \hsize\bgroup\hss}
+%\def\figure{\midinsert\vskip\topskip\hbox to \hsize\bgroup\hss}
+\def\figure{\midinsert\hbox to \hsize\bgroup\hss
+\caption{\relax}}
+%\def\endfigure#1{\hss\egroup
+\def\endfigure{\hss\egroup
+\vskip10pt
+%\caption{#1}%\vskip-\topskip\vskip2pc%\vskip-\dp\capbox
+\copy\capbox
+\global\advance\thmcounter by 1\tindex{Figure \the\thmcounter@Figure %
+\the\chapsymbol.\the\secnum.\the\fignum}\endinsert\global\advance\fignum by 1}
+\newcount\fignum \fignum1
+\newbox\capbox
+\newdimen\capwidth
+\capwidth\hsize\advance\capwidth by -2cm
+%\def\caption#1{\global\advance\fignum by 1\setbox\capbox%
+%\hbox to \hsize{\hss\ninepoint\bf Figure \the\chapsymbol.\the\fignum\kern1pc\rm
+%#1\hss}\copy\capbox}
+% \def\caption#1{\global\advance\fignum by 1\setbox\capbox%
+% \hbox to \hsize{\hfill
+% \vtop{\hbox{\bf Figure \the\chapsymbol.\the\fignum\kern1pc}}%
+% \vtop{\advance\hsize by -4cm\ninepoint
+% \noindent\rm
+% #1}\hfill}\copy\capbox}
+%% \def\caption#1{\setbox\capbox%
+%% \hbox{\ninepoint\bf Figure \the\chapsymbol.\the\secnum.\the\fignum\kern1pc%
+%% \rm #1}
+%% \ifdim\wd\capbox>\capwidth
+%% \setbox\capbox\hbox to \hsize{\hfill\ninepoint
+%% \vtop{\hbox{\bf Figure \the\chapsymbol.\the\fignum\kern1pc}}%
+%% \vtop{\advance\hsize by -3cm\ninepoint
+%% \noindent\rm
+%% #1}\hfill}\else
+%% \setbox\capbox\hbox to \hsize{\hfill\unhbox\capbox\hfill}
+%% \fi\copy\capbox}
+\makeatletter
+\def\begincaption{\c@ption}
+\def\c@ption#1\endcaption{\caption{#1}}
+\makeatother
+\def\caption#1{\global\setbox\capbox%
+\hbox{\ninepoint\bf Figure \the\chapsymbol.\the\secnum.\the\fignum\kern1pc%
+\rm #1}
+\ifdim\wd\capbox>\capwidth
+\global\setbox\capbox\hbox to \hsize{\hfill\ninepoint
+\vtop{\hbox{\bf Figure \the\chapsymbol.\the\secnum.\the\fignum\kern1pc}}%
+\vtop{\advance\hsize by -3cm\ninepoint
+\noindent\rm
+#1}\hfill}\else
+\global\setbox\capbox\hbox to \hsize{\hfill\unhbox\capbox\hfill}
+\fi}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Miscellaneous stuff
+%
+\gdef\titlebreak{ }
+\gdef\tocbreak{}
+\gdef\pubdatabreak{}
+%
+% Some standard symbols, using blackboard bold if
+% available---otherwise \bbb will give bold face.
+%
+\def\A{{\bbb A}}
+\def\N{{\bbb N}}
+\def\Z{{\bbb Z}}
+\def\Q{{\bbb Q}}
+\def\R{{\bbb R}}
+\def\C{{\bbb C}}
+\def\U{{\bbb U}}
+%
+\def\frac#1/#2{\leavevmode
+   \kern.1em \raise .5ex \hbox{\the\scriptfont0 #1}%
+   \kern-.1em /%$/$%
+   \kern-.15em \lower .5ex \hbox{\the\scriptfont0 #2}%
+}
+% The AMS fonts have a nice ``does not divide'' symbol; without the AMS
+% fonts, we put together a passable substitute.
+%
+\ifamsfonts
+\def\notdiv{\mathop{\nmid}}
+\else
+\def\notdiv{\mathord{\not\>\mid\>}}
+\fi
+%
+% convenient abbreviations
+%
+\let\ssk\smallskip
+\let\msk\medskip
+\let\bsk\bigskip
+%
+% get started right
+% 
+\iftimes\tenhalfpoint\baselineskip\basaltextbaselineskip\fi
+%
+\ifcameraready\raggedbottom\else
+\raggedbottom
+\fi
+\let\texonly\iftrue
+\let\endtexonly\fi
+\let\htmlonly\iffalse
+\let\endhtmlonly\fi
+\def\htmlfigure#1{\relax}
+\def\htmlknowl#1#2{}
+\let\txtbold\bf
+\def\lefthead#1{\leftline{#1}}

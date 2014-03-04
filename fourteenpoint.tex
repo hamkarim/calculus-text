@@ -1,0 +1,53 @@
+% a fourteenpoint macro similar to The TeXbook, Appendix E
+\ifx\fourteenpointisalreadyloaded\relax%
+  \endinput\else\let\fourteenpointisalreadyloaded=\relax\fi
+\font\fourteenrm=cmr12 scaled \magstep1
+  \font\fourteensubrm=cmr7 scaled \magstep2
+  \font\fourteensubsubrm=cmr5 scaled \magstep2
+\font\fourteeni=cmmi12 scaled \magstep1
+  \font\fourteensubi=cmmi7 scaled \magstep2
+  \font\fourteensubsubi=cmmi5 scaled \magstep2
+\font\fourteensy=cmsy10  scaled \magstep2
+  \font\fourteensubsy=cmsy7 scaled \magstep2
+  \font\fourteensubsubsy=cmsy5 scaled \magstep2
+\font\fourteentt=cmtt12 scaled \magstep1
+\font\fourteenbf=cmbx12 scaled \magstep1
+  \font\fourteensubbf=cmbx7 scaled \magstep2
+  \font\fourteensubsubbf=cmbx5 scaled \magstep2
+\font\fourteenit=cmti12 scaled \magstep1
+\font\fourteensl=cmsl12 scaled \magstep1
+\font\fourteenscfont=cmcsc10 scaled \magstep2
+\font\fourteenex cmex10 scaled \magstep2
+\font\fourteensubex cmex7 scaled \magstep2
+\font\fourteensubsubex cmex7 scaled \magstep1
+\long\def\setupamsfonts{\csname newif\endcsname\ifamsfonts\amsfontstrue}
+\ifx\ifamsfonts\undefined\let\next\setupamsfonts
+\else\let\next\relax\fi\next
+\long\def\setupbbbold{\csname newfam\endcsname\bbbfam}
+\ifamsfonts\ifx\bbbfam\undefined\let\next\setupbbbold\else
+\let\next\relax\fi\else\let\next\relax\fi\next
+\ifamsfonts
+\font\fourteenbbbold=msbm10 scaled \magstep2
+\font\fourteensubbbbold=msbm7 scaled \magstep2
+\fi
+\def\fourteenpoint{\def\rm{\fam0\fourteenrm}% switch to 14-point type
+  \textfont0=\fourteenrm \scriptfont0=\fourteensubrm 
+    \scriptscriptfont0=\fourteensubsubrm
+  \textfont1=\fourteeni \scriptfont1=\fourteensubi 
+    \scriptscriptfont1=\fourteensubsubi
+  \textfont2=\fourteensy \scriptfont2=\fourteensubsy 
+    \scriptscriptfont2=\fourteensubsubsy
+  \textfont3=\fourteenex \scriptfont3=\fourteensubex 
+    \scriptscriptfont3=\fourteensubsubex
+  \textfont\itfam=\fourteenit  \def\it{\fam\itfam\fourteenit}%
+  \textfont\slfam=\fourteensl  \def\sl{\fam\slfam\fourteensl}%
+  \textfont\ttfam=\fourteentt  \def\tt{\fam\ttfam\fourteentt}%
+  \textfont\bffam=\fourteenbf  \scriptfont\bffam=\fourteensubbf
+    \scriptscriptfont\bffam=\fourteensubsubbf  \def\bf{\fam\bffam\fourteenbf}%
+  \ifamsfonts
+  \textfont\bbbfam\fourteenbbbold \scriptfont\bbbfam\fourteensubbbbold
+  \def\bbbold{\fam\bbbfam\fourteenbbbold}\fi%
+  \normalbaselineskip=18pt%
+  \setbox\strutbox=\hbox{\vrule height12.75pt depth5.25pt width0pt}%
+  \def\sc{\fam\smcap\fourteenscfont}\textfont\smcap=\fourteenscfont 
+  \normalbaselines\rm}

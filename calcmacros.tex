@@ -1,0 +1,85 @@
+\newcount\gpnum\gpnum0
+\def\gpad{\global\advance\gpnum by 1}
+\input fivepoint
+\input rotate
+\input pictexextras
+\input colordvi
+\font\teeny cmr5 scaled 700
+\font\plotfont cmr5 at 3truept
+\let\shadecolor\textRhodamine
+\lineskiplimit3pt
+\lineskip3pt
+\let\ds\displaystyle
+\def\exer{\exercise}
+\def\exam{\example}
+\def\endexam{\endexample}
+\def\cents{\hbox{\rm\rlap/c}}
+\newif \iflatetranscendentals
+\latetranscendentalsfalse
+\newif \ifmultivariable
+\multivariablefalse
+\newif\iflulu
+\lulufalse
+\writinganswerstrue         % the answer chapter
+
+\def\ep{\eqno{\vrule height5pt width5pt depth0pt}}
+\def\ex{\eqno{\vbox{\hsize5pt
+\hrule\hbox to \hsize{\vrule height4.2pt\hfill\vrule}\hrule}}}
+{\catcode`\%=\other
+\gdef\percent{%}}
+%%
+%% Include the next line to put all answers in the answer appendix,
+%% even those marked with "\noanswer".
+%%\let\noanswer\answer
+%%
+%% Include the next four lines to keep answers marked with "\noanswer"
+%% out of the answer appendix.
+%% {\obeylines \gdef\ignoreans#1
+%%   {\def\next{#1}%
+%%   \ifx\next\closeanswer\let\next=\endgroup %
+%%   \else\immediate\write\ans{\percent\next}\let\next=\ignoreans\fi\next}}
+\def\vb{\begingroup\setupverbatim\doverbatim}
+\def\doverbatim#1{\def\next##1#1{##1\endgroup}\next}
+\def\setupverbatim{\tt \uncatcodespecials \obeyspaces }
+\def\uncatcodespecials{\def\do##1{\catcode`##1=12 }\dospecials}
+% An ugly kludge to get the index right when something funny appears
+% as the first entry in a section.
+%
+\def\fixindex#1{\Fixindex{#1}{ }}
+%
+\def\Fixindex#1#2{\index{#1@{\string\csname#2#1LETTER\string\endcsname}}%
+\expandafter\def\csname #1LETTER\endcsname{%
+#1\expandafter
+\gdef\csname #1LETTER\endcsname, ####1 {}}}
+%
+\def\beginletteredindex{\fixindex{P}\letteredindextrue\beginindex}
+%
+%   $$\dint{D} f(x)e^{x^2}$$
+%
+%\def\dint#1{\mathop{\int\!\!\!\int}_{#1\;\;\;}}
+\def\dint#1{\mathchoice{\mathop{\int\!\!\!\int}_{#1\;\;\;}}%
+{\mathop{\int\!\!\!\int}_{#1}}%
+{\mathop{\int\!\!\!\int}}%
+{\mathop{\int\!\!\!\int}}}
+\def\tint#1{\mathchoice{\mathop{\int\!\!\!\int\!\!\!\int}_{#1\;\;\;}}%
+{\mathop{\int\!\!\!\int\!\!\!\int}_{#1}}%
+{\mathop{\int\!\!\!\int\!\!\!\int}_{#1}}%
+{\mathop{\int\!\!\!\int\!\!\!\int}_{#1}}}
+%\def\tint#1{\mathop{\int\!\!\!\int\!\!\!\int}_{#1\;\;\;}}
+\def\arccot{\mathop{\rm arccot}\nolimits}
+\def\arcsec{\mathop{\rm arcsec}\nolimits}
+\def\arccsc{\mathop{\rm arccsc}\nolimits}
+\def\csch{\mathop{\rm csch}\nolimits}
+\def\sech{\mathop{\rm sech}\nolimits}
+\def\arcsech{\mathop{\rm arcsech}\nolimits}
+\def\arccosh{\mathop{\rm arccosh}\nolimits}
+\def\arcsinh{\mathop{\rm arcsinh}\nolimits}
+\def\arccsch{\mathop{\rm arccsch}\nolimits}
+\def\arccoth{\mathop{\rm arccoth}\nolimits}
+\def\arctanh{\mathop{\rm arctanh}\nolimits}
+\def\v#1{\langle #1\rangle}
+%% Stuff to make tex-to-html easier
+\let\elselatetranscendentals\else
+\let\filatetranscendentals\fi
+\let\elsemultivariable\else
+\let\fimultivariable\fi

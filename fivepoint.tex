@@ -1,0 +1,36 @@
+% a fivepoint macro similar to The TeXbook, Appendix E
+\ifx\fivepointisalreadyloaded\relax%
+  \endinput\else\let\fivepointisalreadyloaded=\relax\fi
+\font\fiverm=cmr5 \font\fivesubrm=cmr6 \font\fivesubsubrm=cmr5
+\font\fivei=cmmi5 \font\fivesubi=cmmi6 \font\fivesubsubi=cmmi5
+\font\fivesy=cmsy5 \font\fivesubsy=cmsy6 \font\fivesubsubsy=cmsy5
+\font\fivebf=cmbx5 \font\fivesubbf=cmbx6 \font\fivesubsubbf=cmbx5
+\font\fiveit=cmti5
+\font\fivescfont=cmcsc10 at 5pt
+\long\def\setupamsfonts{\csname newif\endcsname\ifamsfonts\amsfontstrue}
+\ifx\ifamsfonts\undefined\let\next\setupamsfonts
+\else\let\next\relax\fi\next
+\long\def\setupbbbold{\csname newfam\endcsname\bbbfam}
+\ifamsfonts\ifx\bbbfam\undefined\let\next\setupbbbold\else
+\let\next\relax\fi\else\let\next\relax\fi\next
+\ifamsfonts
+\font\fivebbbold=msbm5
+\font\fivesubbbbold=msbm6
+\fi
+\def\fivepoint{\def\rm{\fam0\fiverm}% switch to 5-point type
+  \textfont0=\fiverm \scriptfont0=\fivesubrm 
+  \scriptscriptfont0=\fivesubsubrm
+  \textfont1=\fivei \scriptfont1=\fivesubi \scriptscriptfont1=\fivesubsubi
+  \textfont2=\fivesy \scriptfont2=\fivesubsy 
+  \scriptscriptfont2=\fivesubsubsy
+  \textfont3=\tenex \scriptfont3=\tenex \scriptscriptfont3=\tenex
+  \textfont\itfam=\fiveit  \def\it{\fam\itfam\fiveit}%
+  \textfont\bffam=\fivebf  \scriptfont\bffam=\fivesubbf
+   \scriptscriptfont\bffam=\fivesubsubbf  \def\bf{\fam\bffam\fivebf}%
+  \ifamsfonts
+  \textfont\bbbfam\fivebbbold \scriptfont\bbbfam\fivesubbbbold
+  \def\bbbold{\fam\bbbfam\fivebbbold}\fi%
+  \normalbaselineskip=9pt%
+  \setbox\strutbox=\hbox{\vrule height5pt depth2pt width0pt}%
+  \def\sc{\fam\smcap\fivescfont}\textfont\smcap=\fivescfont 
+  \normalbaselines\rm}

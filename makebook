@@ -1,0 +1,75 @@
+#!/bin/bash
+#
+#
+# Make sure these exist
+#
+touch $1.toc;
+touch $1.idx;
+touch $1.tdx;
+touch $1.aux;
+#
+# Keep copies for comparison, so we can check if anything changed.
+#
+cp $1.idx $1.idx.prev;
+cp $1.tdx $1.tdx.prev;
+cp $1.aux $1.aux.prev;
+#
+# .cts file included in document, while .toc is generated anew
+# This is not really necessary, but would be if we wanted to insert
+# the toc after we had already started generating the new toc.
+#
+cp $1.toc $1.cts;
+#
+# Use the next three lines if you want to make the theorem index
+#
+echo -e "> makeindex $1.tdx";
+makeindex $1.tdx;
+mv $1.ind $1.tin
+#
+echo -e "> idx2ind $1.idx";
+makeindex $1.idx;
+#
+echo -e "> bibtex $1";
+bibtex $1;
+#
+#
+if egrep "^\\\\def\\\\usetimesfonts\{true\}" $1.tex >/dev/null ; then
+echo -e "> texmt $1";
+texmt $1;
+else
+echo -e "> tex -shell-escape $1";
+tex -shell-escape $1;
+fi
+#
+# Warn if index or contents info has changed
+#
+if diff $1.idx.prev $1.idx >/dev/null ; then
+/bin/true;
+else
+echo -e "\n--> index entries have changed\n";
+fi
+if diff $1.tdx.prev $1.tdx >/dev/null ; then
+/bin/true;
+else
+echo -e "\n--> second index entries have changed\n";
+fi
+if diff $1.toc $1.cts >/dev/null ; then
+/bin/true;
+else
+echo -e "\n--> table of contents has changed\n";
+fi
+#
+if diff $1.aux $1.aux.prev >/dev/null ; then
+/bin/true;
+else
+echo -e "\n--> references have changed\n";
+fi
+#
+# Warn if the same xref name has been used for different items
+#
+if [ 0 -ne `cat $1.aux |  ./strip_refs.pl | sort \
+     | uniq -d | /usr/bin/wc -c` ]; then
+echo -e "\n--> duplicate names for xrefs in aux file\n"
+fi
+
+exit 0

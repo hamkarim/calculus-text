@@ -1,0 +1,180 @@
+%
+% Definitions that must come before \input bookmacros: the definitions
+% shown are for the non-default values.
+%
+%\def\usetimesfonts{true}
+%\def\printblankpages{false}
+\def\romanintro{false}
+\def\cameraready{false}
+\def\subsectionsintoc{true}
+\def\kindle{false}
+%
+\input bookmacros
+\input epsf
+\input tables
+\input live_url
+\input calcmacros
+\input transcendentals
+\input multi_or_single
+\input pictex
+\input lulu
+\input tikz-conf
+%
+% This information is used to produce the title page and the page of
+% publication data.
+%
+\booktitle{Calculus}
+\iflatetranscendentals
+\booksubtitle{Late Transcendentals}
+\elselatetranscendentals
+\booksubtitle{Early Transcendentals}
+\filatetranscendentals
+%\author{David Guichard}
+%\institution{Whitman College}
+%
+
+\titlepage
+
+%\null\blankpagetrue\vfill\eject
+
+%\pageno=-2
+
+\null\vfill
+
+\leftline{\epsfxsize3truecm\epsfbox{cc-by-nc-sa.eps}}
+
+\noindent{\eightpoint
+This work is licensed under the Creative Commons
+Attribution-NonCommercial-ShareAlike License. To view a copy of this
+license, visit 
+\url{http://creativecommons.org/licenses/by-nc-sa/3.0/} 
+{\tt http://creativecommons.org/licenses/by-nc-sa/3.0/}\endurl\ 
+or
+send a letter to Creative Commons, 543 Howard Street, 5th Floor, San
+Francisco, California, 94105, USA. If you distribute this work or a
+derivative, include the history of the document. 
+
+\msk\noindent
+This text was initially written by David Guichard. The single variable
+material in chapters 1--9 is a modification and expansion of notes
+written by Neal Koblitz at the University of Washington, who
+generously gave permission to use, modify, and distribute his
+work. New material has been added, and old material has been modified,
+so some portions now bear little resemblance to the original.
+
+\msk\noindent
+The book includes some exercises and examples from {\it Elementary
+Calculus: An Approach Using Infinitesimals}, by H.~Jerome Keisler, 
+available at  
+\url{http://www.math.wisc.edu/~keisler/calc.html}%
+\vb|http://www.math.wisc.edu/~keisler/calc.html|\endurl\ 
+under a Creative Commons license. In addition, the chapter on
+differential equations and the section on numerical integration
+are largely derived from the corresponding portions of
+Keisler's book.
+Albert Schueller, Barry Balof, and Mike Wills have contributed
+additional material.
+
+\msk\noindent
+This copy of the text was compiled from source at 
+\the\bighand:\ifnum\littlehand<10{0}\fi
+        \the\littlehand\ on \the\month/\the\day/\the\year.
+
+\msk\noindent
+I will be glad to receive corrections and
+suggestions for improvement at {\tt guichard@whitman.edu}. 
+
+}
+
+\blankpagetrue
+\eject
+
+\null\blankpagetrue
+\vfill
+\centerline{\it For Kathleen,\/}
+\centerline{\it without whose encouragement\/}
+\centerline{\it this book would not have\/}
+\centerline{\it been written.\/}
+\vfill\vfill\eject
+%
+% One prefatory chapter
+%
+\chapnum=-2
+%
+\chapter{Contents}
+%
+% The next line puts an entry for the TOC into the brief contents.
+%
+\begincts
+\input \jobname.cts
+\endcts
+
+\input intro
+
+%
+% Chapters
+%
+\input chapter01
+\input chapter02
+\input chapter03
+\input chapter04
+\input chapter05
+\input chapter06
+\input chapter07
+\input chapter08
+\input chapter09
+\iflatetranscendentals
+\input chapter09b
+\input chapter09c
+\filatetranscendentals
+\input chapter10
+\input chapter11
+\ifmultivariable
+\input chapter12
+\input chapter13
+\input chapter14
+\input chapter15
+\input chapter16
+\input chapter17
+\fimultivariable
+
+\appendix{Selected Answers}
+\chaprdef{chap:answers}
+\immediate\write\ans{\string\endcolumns}
+%\immediate\write\ans{\string\flushcol\string\endcolumns}
+%\immediate\write\ans{\string\flushall\string\endcolumns}
+\immediate\closeout\ans
+{\overfullrule0pt
+
+\input \jobname.answers
+
+}
+
+\appendix{Useful Formulas}
+\chaprdef{chap:formulas}
+\input formulas
+\htmlonly
+\input chapter18
+\endhtmlonly
+
+% \appendix{Graph Paper}
+% \chaprdef{chap:graph paper}
+% \input graph_paper
+
+%\unletteredappendix{Index of \titlebreak Numbered Items}
+%\chaprdef{app:Theorem Index}
+%
+%\beginindex
+%\input calculus.tin
+%\endindex
+%
+\unletteredappendix{Index}
+%
+\beginletteredindex
+\input \jobname.ind
+\endindex
+%
+\immediate\closeout\solns
+\bye
+
+

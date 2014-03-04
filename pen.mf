@@ -1,0 +1,7 @@
+mode_setup; font_setup;
+ 
+px#:=rule_thickness#; % horizontal thickness of pen
+py#:=.9px#; % vertical pen thickness
+define_blacker_pixels(px,py);
+pickup pencircle xscaled px yscaled py;
+plotter_pen:=savepen;

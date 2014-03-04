@@ -1,0 +1,39 @@
+% a ninepoint macro similar to The TeXbook, Appendix E
+% Set up to use Times Roman and MathTime fonts
+%
+\ifx\ninehalfpointisalreadyloaded\relax%
+  \endinput\else\let\ninehalfpointisalreadyloaded=\relax\fi
+\font\ninehalfrm ptmr at 9.6pt
+\font\ninehalfit ptmri at 9.6pt
+\font\ninehalfsl ptmro at 9.6pt
+\font\ninehalftt pcrr at 9.6pt
+\font\ninehalfbf ptmb at 9.6pt
+\font\ninehalfcal cmsy9
+\font\ninehalfsubcal cmsy6
+\font\ninehalfsubsubcal cmsy5
+\long\def\setupamsfonts{\csname newif\endcsname\ifamsfonts\amsfontstrue}
+\ifx\ifamsfonts\undefined\let\next\setupamsfonts
+\else\let\next\relax\fi\next
+\ifamsfonts
+\font\ninehalfbbbold=msbm9
+\font\ninehalfsubbbbold=msbm7
+\fi
+%\font\ninehalfscfont=pcrr at 9.6pt
+\font\ninehalfscfont=ptmrsc at 9.6pt
+\def\ninehalfpoint{\def\rm{\fam0\ninehalfrm}% switch to 9-point type
+  \MTMI{9.6pt}{7pt}{5pt}\MTSY{9.6pt}{7pt}{5pt}\MTEX{9.6pt}%
+  \MathRoman{ptmr}{9.6pt}{7pt}{5.5pt}\MathBold{ptmb}{9.6pt}{7pt}{5.5pt}%
+  \MathItalic{ptmri}{9.6pt}{7pt}{5.5pt}\MathOblique{ptmro}{9.6pt}{7pt}{5.5pt}%
+  \textfont\calfam\ninehalfcal \scriptfont\calfam\ninehalfsubcal
+  \scriptscriptfont\calfam\ninehalfsubsubcal
+  \def\it{\fam\itfam\ninehalfit}%
+  \def\sl{\fam\slfam\ninehalfsl}%
+  \def\tt{\ninehalftt}%
+  \def\bf{\fam\bffam\ninehalfbf}%
+  \ifamsfonts
+  \textfont\bbbfam\ninehalfbbbold \scriptfont\bbbfam\ninehalfsubbbbold
+  \def\bbbold{\fam\bbbfam\ninehalfbbbold}\fi%
+  \normalbaselineskip=11pt%
+  \setbox\strutbox=\hbox{\vrule height8pt depth3pt width0pt}%
+  \def\sc{\fam\smcap\ninehalfscfont}\textfont\smcap=\ninehalfscfont 
+  \normalbaselines\rm}

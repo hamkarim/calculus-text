@@ -1,0 +1,172 @@
+\section{First Order Linear Equations}{}{}
+%\secrdef{sec:first order homogeneous linear}
+\nobreak
+As you might guess, a first order linear differential equation has the form 
+$\ds \dot y + p(t)y = f(t)$. Not only is this closely related in form
+to the first order homogeneous linear equation, we can use what we
+know about solving homogeneous equations to solve the general linear
+equation. 
+
+Suppose that $y_1(t)$ and $y_2(t)$ are solutions to 
+$\ds \dot y + p(t)y = f(t)$. Let $\ds g(t)=y_1-y_2$. Then
+$$\eqalign{
+ g'(t)+p(t)g(t)&=y_1'-y_2'+p(t)(y_1-y_2)\cr
+&=(y_1'+p(t)y_1)-(y_2'+p(t)y_2)\cr
+&=f(t)-f(t)=0.\cr}
+$$
+In other words, $\ds g(t)=y_1-y_2$ is a solution to the homogeneous
+equation $\ds \dot y + p(t)y = 0$. Turning this around, any solution
+to the linear equation $\ds \dot y + p(t)y = f(t)$, call it $y_1$, can
+be written as $y_2+g(t)$, for some particular $y_2$ and some solution
+$g(t)$ of the homogeneous equation $\ds \dot y + p(t)y = 0$. Since we
+already know how to find all solutions of the homogeneous equation,
+finding just one solution to the equation $\ds \dot y + p(t)y = f(t)$
+will give us all of them.
+
+How might we find that one particular solution to $\ds \dot y + p(t)y
+= f(t)$? Again, it turns out that what we already know helps. We know
+that the general solution to the homogeneous equation
+$\ds \dot y + p(t)y = 0$ looks like $\ds Ae^{P(t)}$. We now make an
+inspired guess: consider the function $\ds v(t)e^{P(t)}$, in which we
+have replaced the constant parameter $A$ with the function
+$v(t)$. This technique is called 
+{\dfont variation of parameters\index{variation of parameters}}.
+For
+convenience write this as $s(t)=v(t)h(t)$ where $\ds h(t)=e^{P(t)}$ 
+is a solution to the
+homogeneous equation. Now let's compute a bit with $s(t)$:
+$$\eqalign{
+s'(t)+p(t)s(t)&=v(t)h'(t)+v'(t)h(t)+p(t)v(t)h(t)\cr
+&=v(t)(h'(t)+p(t)h(t)) + v'(t)h(t)\cr
+&=v'(t)h(t).\cr}
+$$
+The last equality is true because $\ds h'(t)+p(t)h(t)=0$, since $h(t)$
+is a solution to the homogeneous equation. We are hoping to find a
+function $s(t)$ so that $\ds s'(t)+p(t)s(t)=f(t)$; we will have such a
+function if we can arrange to have $\ds v'(t)h(t)=f(t)$, that is,
+$\ds v'(t)=f(t)/h(t)$. But this is as easy (or hard) as finding an
+anti-derivative of $\ds f(t)/h(t)$. Putting this all together, the
+general solution to $\ds \dot y + p(t)y = f(t)$ is
+$$v(t)h(t)+Ae^{P(t)} = v(t)e^{P(t)}+Ae^{P(t)}.$$
+
+\example Find the solution of the initial value problem
+$\ds \dot y+3y/t=t^2$, $y(1)=1/2$. First we find the general solution;
+since we are interested in a solution with a given condition at $t=1$,
+we may assume $t>0$.
+We start by solving the homogeneous equation as usual; call the
+solution $g$:
+$$g=Ae^{-\int (3/t)\,dt}=Ae^{-3\ln t}=At^{-3}.$$
+Then as in the discussion, $\ds h(t)=t^{-3}$ and
+$\ds v'(t)=t^2/t^{-3}=t^5$, so $\ds v(t)=t^6/6$. We know that
+every solution to the equation looks like
+$$v(t)t^{-3}+At^{-3}={t^6\over6}t^{-3}+At^{-3}={t^3\over6}+At^{-3}.$$
+Finally we substitute to find $A$:
+$$\eqalign{
+{1\over 2}&={(1)^3\over6}+A(1)^{-3}={1\over6}+A\cr
+A&={1\over 2}-{1\over6}={1\over3}.\cr}
+$$
+The solution is then
+$$y={t^3\over6}+{1\over3}t^{-3}.$$
+\endexample
+
+Here is an alternate method for finding a particular solution to the
+differential equation, using an
+{\dfont integrating factor\/}. In the differential equation $\ds \dot
+y+p(t)y=f(t)$, we note that if we multiply through by a function
+$I(t)$ to get $\ds I(t)\dot y+I(t)p(t)y=I(t)f(t)$, the left hand side
+looks like it could be a derivative computed by the product rule:
+$${d\over dt}(I(t)y)=I(t)\dot y+I'(t)y.$$
+Now if we could choose $I(t)$ so that $I'(t)=I(t)p(t)$, this would be
+exactly the left hand side of the differential equation. But this is
+just a first order homogeneous linear equation, and we know a solution
+is $\ds I(t)=e^{Q(t)}$, where $\ds Q(t)=\int p\,dt$; note that 
+$Q(t)=-P(t)$, where $P(t)$ appears in the variation of parameters
+method and $P'(t)=-p$. Now the modified differential equation is 
+$$
+\eqalign{
+e^{-P(t)}\dot y+e^{-P(t)}p(t)y&=e^{-P(t)}f(t)\cr
+{d\over dt}(e^{-P(t)}y)&=e^{-P(t)}f(t).\cr
+}$$
+Integrating both sides gives
+$$
+\eqalign{
+e^{-P(t)}y&=\int e^{-P(t)}f(t)\,dt\cr
+y&=e^{P(t)}\int e^{-P(t)}f(t)\,dt.\cr
+}$$
+If you look carefully, you will see that this is exactly the same
+solution we found by variation of parameters, because
+$\ds e^{-P(t)}f(t)=f(t)/h(t)$.
+
+Some people find it easier to remember how to use the integrating
+factor method than variation of parameters. Since ultimately they
+require the same calculation, you should use whichever of the two you
+find easier to recall. Using this method, the solution of the previous
+example would look just a bit different: Starting with
+$\ds \dot y+3y/t=t^2$, we recall that the integrating factor is
+$\ds e^{\int 3/t}=e^{3\ln t}=t^3$. Then we multiply through by the
+integrating factor and solve:
+$$\eqalign{
+t^3\dot y+t^3 3y/t&=t^3t^2\cr
+t^3\dot y+t^2 3y&=t^5\cr
+{d\over dt}(t^3 y)&=t^5\cr
+t^3 y&=t^6/6\cr
+y&=t^3/6.\cr}
+$$
+This is the same answer, of course, and the problem is then finished
+just as before.
+
+\exercises
+
+In problems 1--10, find the general solution of the equation.
+
+\exercise $\ds\dot y +4y=8$
+\answer $\ds y=Ae^{-4t}+2$
+\endanswer
+\endexercise
+
+\exercise $\ds\dot y-2y=6$
+\answer $\ds y=Ae^{2t}-3$
+\endanswer
+\endexercise
+
+\exercise $\ds\dot y +ty=5t$
+\answer $\ds y=Ae^{-(1/2)t^2}+5$
+\endanswer
+\endexercise
+
+\exercise $\ds\dot y+e^ty=-2e^t$
+\answer $\ds y=Ae^{-e^t}-2$
+\endanswer
+\endexercise
+
+\exercise $\ds\dot y-y=t^2$
+\answer $\ds y=Ae^{t}-t^2-2t-2$
+\endanswer
+\endexercise
+
+\exercise $\ds 2\dot y +y=t$
+\answer $\ds y=Ae^{-t/2}+t-2$
+\endanswer
+\endexercise
+
+\exercise $\ds t\dot y -2y=1/t$, $t>0$
+\answer $\ds y=At^2-{1\over3t}$
+\endanswer
+\endexercise
+
+\exercise $\ds t\dot y+y=\sqrt{t}$, $t>0$
+\answer $\ds y={c\over t}+{2\over3}\sqrt t$
+\endanswer
+\endexercise
+
+\exercise $\ds\dot y\cos t+y\sin t=1$, $-\pi/2<t<\pi/2$
+\answer $\ds y= A\cos t+\sin t$
+\endanswer
+\endexercise
+
+\exercise $\ds\dot y + y\sec t=\tan t$, $-\pi/2<t<\pi/2$
+\answer $\ds y= {A\over\sec t+\tan t}+1-{t\over\sec t+\tan t}$
+\endanswer
+\endexercise
+
+\endexercises

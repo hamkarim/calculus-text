@@ -1,0 +1,41 @@
+% a ninepoint macro similar to The TeXbook, Appendix E
+\ifx\ninepointisalreadyloaded\relax%
+  \endinput\else\let\ninepointisalreadyloaded=\relax\fi
+\font\ninerm=cmr9 \font\ninesubrm=cmr6\font\ninesubsubrm=cmr5
+\font\ninei=cmmi9 \font\ninesubi=cmmi6\font\ninesubsubi=cmmi5
+\font\ninesy=cmsy9 \font\ninesubsy=cmsy6\font\ninesubsubsy=cmsy5
+\font\ninett=cmtt9
+\font\ninebf=cmbx9 \font\ninesubbf=cmbx6 \font\ninesubsubbf=cmbx5
+\font\nineit=cmti9
+\font\ninesl=cmsl9
+\font\ninescfont=cmcsc10 at 9pt
+\long\def\setupamsfonts{\csname newif\endcsname\ifamsfonts\amsfontstrue}
+\ifx\ifamsfonts\undefined\let\next\setupamsfonts
+\else\let\next\relax\fi\next
+\long\def\setupbbbold{\csname newfam\endcsname\bbbfam}
+\ifamsfonts\ifx\bbbfam\undefined\let\next\setupbbbold\else
+\let\next\relax\fi\else\let\next\relax\fi\next
+\ifamsfonts
+\font\ninebbbold=msbm9
+\font\ninesubbbbold=msbm6
+\fi
+\font\ninex cmex9
+\font\ninesubex cmex7
+\font\ninesubsubex cmex7
+\def\ninepoint{\def\rm{\fam0\ninerm}% switch to 9-point type
+  \textfont0=\ninerm \scriptfont0=\ninesubrm \scriptscriptfont0=\ninesubsubrm
+  \textfont1=\ninei \scriptfont1=\ninesubi \scriptscriptfont1=\ninesubsubi
+  \textfont2=\ninesy \scriptfont2=\ninesubsy \scriptscriptfont2=\ninesubsubsy
+  \textfont3=\ninex \scriptfont3=\ninesubex \scriptscriptfont3=\ninesubsubex
+  \textfont\itfam=\nineit  \def\it{\fam\itfam\nineit}%
+  \textfont\slfam=\ninesl  \def\sl{\fam\slfam\ninesl}%
+  \textfont\ttfam=\ninett  \def\tt{\fam\ttfam\ninett}%
+  \textfont\bffam=\ninebf  \scriptfont\bffam=\ninesubbf
+  \scriptscriptfont\bffam=\ninesubsubbf  \def\bf{\fam\bffam\ninebf}%
+  \ifamsfonts
+  \textfont\bbbfam\ninebbbold \scriptfont\bbbfam\ninesubbbbold
+  \def\bbbold{\fam\bbbfam\ninebbbold}\fi%
+  \normalbaselineskip=11pt%
+  \setbox\strutbox=\hbox{\vrule height8pt depth3pt width0pt}%
+  \def\sc{\fam\smcap\ninescfont}\textfont\smcap=\ninescfont 
+  \normalbaselines\rm}

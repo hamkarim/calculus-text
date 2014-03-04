@@ -1,0 +1,54 @@
+% an eleven point macro similar to The TeXbook, Appendix E
+%
+\ifx\elevenpointisalreadyloaded\relax%
+  \endinput\else\let\elevenpointisalreadyloaded=\relax\fi
+\font\elevenrm=cmr10 scaled \magstephalf 
+\font\elevensubrm=cmr9 scaled \magstephalf
+\font\elevensubsubrm=cmr7 scaled \magstephalf
+\font\eleveni=cmmi10 scaled \magstephalf
+\font\elevensubi=cmmi9 scaled \magstephalf
+\font\elevensubsubi=cmmi7 scaled \magstephalf
+\font\elevensy=cmsy10 at 12pt
+\font\elevensubsy=cmsy9 scaled \magstephalf
+\font\elevensubsubsy=cmsy7 scaled \magstephalf
+\font\eleventt=cmtt10 scaled \magstephalf
+\font\elevenbf=cmbx10 scaled \magstephalf
+\font\elevensubbf=cmbx9 scaled \magstephalf
+\font\elevensubsubbf=cmbx7 scaled \magstephalf
+\font\elevenit=cmti10 scaled \magstephalf
+\font\elevensl=cmsl10 scaled \magstephalf
+\font\elevenscfont=cmcsc10  scaled \magstephalf
+\font\elevenex cmex10 scaled \magstephalf
+\font\elevensubex cmex7 scaled \magstephalf
+\font\elevensubsubex cmex7 scaled \magstephalf
+\long\def\setupamsfonts{\csname newif\endcsname\ifamsfonts\amsfontstrue}
+\ifx\ifamsfonts\undefined\let\next\setupamsfonts
+\else\let\next\relax\fi\next
+\long\def\setupbbbold{\csname newfam\endcsname\bbbfam}
+\ifamsfonts\ifx\bbbfam\undefined\let\next\setupbbbold\else
+\let\next\relax\fi\else\let\next\relax\fi\next
+\ifamsfonts
+\font\elevenbbbold=msbm10 scaled \magstephalf
+\font\elevensubbbbold=msbm7 scaled \magstephalf
+\fi
+\def\elevenpoint{\def\rm{\fam0\elevenrm}%
+  \textfont0=\elevenrm \scriptfont0=\elevensubrm 
+    \scriptscriptfont0=\elevensubsubrm
+  \textfont1=\eleveni \scriptfont1=\elevensubi 
+    \scriptscriptfont1=\elevensubsubi
+  \textfont2=\elevensy \scriptfont2=\elevensubsy 
+    \scriptscriptfont2=\elevensubsubsy
+  \textfont3=\elevenex \scriptfont3=\elevensubex
+    \scriptscriptfont3=\elevensubsubex
+  \textfont\itfam=\elevenit  \def\it{\fam\itfam\elevenit}%
+  \textfont\slfam=\elevensl  \def\sl{\fam\slfam\elevensl}%
+  \textfont\ttfam=\eleventt  \def\tt{\fam\ttfam\eleventt}%
+  \textfont\bffam=\elevenbf  \scriptfont\bffam=\elevensubbf
+  \scriptscriptfont\bffam=\elevensubsubbf  \def\bf{\fam\bffam\elevenbf}%
+  \ifamsfonts
+  \textfont\bbbfam\elevenbbbold \scriptfont\bbbfam\elevensubbbbold
+  \def\bbbold{\fam\bbbfam\elevenbbbold}\fi%
+  \normalbaselineskip=13.1pt%
+  \setbox\strutbox=\hbox{\vrule height9.1pt depth4pt width0pt}%
+  \def\sc{\fam\smcap\elevenscfont}\textfont\smcap=\elevenscfont 
+  \normalbaselines\rm}

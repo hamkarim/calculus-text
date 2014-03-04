@@ -1,0 +1,17 @@
+% 
+% tindex.tex
+%
+% Taken from idxmac.tex. New commands \tindex and \maketindex
+% to produce a second index.
+% 
+\makeatletter
+% 
+\def\maketindex{\if@filesw \newwrite\@tindexfile
+  \immediate\openout\@tindexfile=\jobname.tdx
+  \def\tindex{\@bsphack\begingroup\@sanitize\@wrindex\@tindexfile}
+  \typeout{Writing index file \jobname.tdx }\fi}
+%  
+\def\tindex{\@bsphack\begingroup\@sanitize\@tindex}
+\def\@tindex#1{\endgroup\@esphack}
+%  
+\makeatother

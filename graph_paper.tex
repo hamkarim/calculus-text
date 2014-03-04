@@ -1,0 +1,69 @@
+Graph paper suitable for printing is on the next two pages.
+\vfill\eject 
+
+\newcount\gridresolution
+\gridresolution=6   % squares per inch
+\newif\ifdashed
+\dashedtrue         % dashed grid lines?
+%
+\newcount\xmax
+\xmax=13 \multiply\xmax by \gridresolution \divide\xmax by 2
+\newcount\ymax
+\ymax=9 \multiply\ymax by \gridresolution
+\newdimen\dashsize
+\dashsize=1truein
+\divide\dashsize by \gridresolution
+\divide\dashsize by 12
+%
+% xsize is 6.5 inches if the gridresolution is even, but must be
+% adjusted if there are an odd number of squares per inch.
+%
+\newdimen\xsize \xsize=1truein
+\multiply\xsize by \xmax
+\divide\xsize by \gridresolution
+%
+\beginpicture
+\linethickness0.1truept
+\setcoordinatesystem units <\xsize,9truein>
+\setplotarea x from 0 to 1, y from 0 to 1
+\ifdashed
+\grid {1} {1}
+\setdashpattern <\dashsize,2\dashsize,2\dashsize,2\dashsize,%
+                 2\dashsize,2\dashsize,\dashsize>
+\fi
+\grid {\xmax} {\ymax}
+\endpicture
+\vfill\eject
+
+\newbox\graph
+\setbox\graph=\vbox{\null\beginpicture
+\setplotsymbol({\vrule height0.15truept width0.3truept depth0.15truept})
+\linethickness0.1truept
+\setcoordinatesystem units <.3truein,.3truein>
+\setplotarea x from -6 to 6, y from -6 to 6
+\putrule from -6 0 to 6 0
+\putrule from 0 -6 to 0 6
+\setdots <0.03truein>
+\circulararc 360 degrees from 6 0, center at 0 0
+\circulararc 360 degrees from 5 0, center at 0 0
+\circulararc 360 degrees from 4 0, center at 0 0
+\circulararc 360 degrees from 3 0, center at 0 0
+\circulararc 360 degrees from 2 0, center at 0 0
+\circulararc 360 degrees from 1 0, center at 0 0
+\setdots <0.03truein>
+\setlinear
+\plot -3 -5.2 3 5.2 /
+\plot -3 5.2 3 -5.2 /
+\plot -5.2 -3 5.2 3 /
+\plot -5.2 3 5.2 -3 /
+\endpicture\null}
+
+\offinterlineskip
+\vbox to \vsize{
+\leftline{\copy\graph}
+\vss
+\rightline{\copy\graph}
+\vss
+\leftline{\copy\graph}
+}
+

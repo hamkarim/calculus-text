@@ -1,0 +1,38 @@
+% a twelvepoint macro similar to The TeXbook, Appendix E
+\ifx\twelvepointisalreadyloaded\relax%
+  \endinput\else\let\twelvepointisalreadyloaded=\relax\fi
+\font\twelverm ptmr at 12pt
+\font\twelveit ptmri at 12pt
+\font\twelvesl ptmro at 12pt
+\font\twelvett pcrr at 12pt
+\font\twelvebf ptmb at 12pt
+\font\twelvecal cmsy9
+\font\twelvesubcal cmsy6
+\font\twelvesubsubcal cmsy5
+\long\def\setupamsfonts{\csname newif\endcsname\ifamsfonts\amsfontstrue}
+\ifx\ifamsfonts\undefined\let\next\setupamsfonts
+\else\let\next\relax\fi\next
+\ifamsfonts
+\font\twelvebbbold=msbm10 scaled \magstep1
+\font\tenhalfsubbbbold=msbm7 scaled \magstep1
+\fi
+%\font\twelvescfont=pcrr at 12pt
+\font\twelvescfont=ptmrsc at 12pt
+\def\twelvepoint{\def\rm{\fam0\twelverm}% switch to 12-point type
+  \MTMI{12pt}{8.8pt}{7pt}\MTSY{12pt}{8.8pt}{7pt}\MTEX{12pt}%
+  \MathRoman{ptmr}{12pt}{8.8pt}{7pt}\MathBold{ptmb}{12pt}{8.8pt}{7pt}%
+  \MathItalic{ptmri}{12pt}{8.8pt}{7pt}%
+  \MathOblique{ptmro}{12pt}{8.8pt}{7pt}%
+  \textfont\calfam\twelvecal \scriptfont\calfam\twelvesubcal
+  \scriptscriptfont\calfam\twelvesubsubcal
+  \def\it{\fam\itfam\twelveit}%
+  \def\sl{\fam\slfam\twelvesl}%
+  \def\tt{\fam\ttfam\twelvett}%
+  \def\bf{\fam\bffam\twelvebf}%
+  \ifamsfonts
+  \textfont\bbbfam\tenhalfbbbold \scriptfont\bbbfam\tenhalfsubbbbold
+  \def\bbbold{\fam\bbbfam\tenhalfbbbold}\fi%
+  \normalbaselineskip=15pt%
+  \setbox\strutbox=\hbox{\vrule height10.6pt depth4.4pt width0pt}%
+  \def\sc{\fam\smcap\twelvescfont}\textfont\smcap=\twelvescfont 
+  \normalbaselines\rm}

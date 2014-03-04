@@ -1,0 +1,49 @@
+% a twelvepoint macro similar to The TeXbook, Appendix E
+\ifx\twelvepointisalreadyloaded\relax%
+  \endinput\else\let\twelvepointisalreadyloaded=\relax\fi
+\font\twelverm=cmr12 \font\twelvesubrm=cmr7 scaled \magstep1
+  \font\twelvesubsubrm=cmr5 scaled \magstep1
+\font\twelvei=cmmi12 \font\twelvesubi=cmmi7 scaled \magstep1
+  \font\twelvesubsubi=cmmi5 scaled \magstep1
+\font\twelvesy=cmsy10 at 12pt \font\twelvesubsy=cmsy7 scaled \magstep1
+  \font\twelvesubsubsy=cmsy5 scaled \magstep1
+\font\twelvett=cmtt12
+\font\twelvebf=cmbx12 \font\twelvesubbf=cmbx7 scaled \magstep1
+  \font\twelvesubsubbf=cmbx5 scaled \magstep1
+\font\twelveit=cmti12
+\font\twelvesl=cmsl12
+\font\twelvescfont=cmcsc10 at 12pt
+\font\twelveex cmex10 scaled \magstep1
+\font\twelvesubex cmex7 scaled \magstep1
+\font\twelvesubsubex cmex7
+\long\def\setupamsfonts{\csname newif\endcsname\ifamsfonts\amsfontstrue}
+\ifx\ifamsfonts\undefined\let\next\setupamsfonts
+\else\let\next\relax\fi\next
+\long\def\setupbbbold{\csname newfam\endcsname\bbbfam}
+\ifamsfonts\ifx\bbbfam\undefined\let\next\setupbbbold\else
+\let\next\relax\fi\else\let\next\relax\fi\next
+\ifamsfonts
+\font\twelvebbbold=msbm10 scaled \magstep1
+\font\twelvesubbbbold=msbm7 scaled \magstep1
+\fi
+\def\twelvepoint{\def\rm{\fam0\twelverm}% switch to 12-point type
+  \textfont0=\twelverm \scriptfont0=\twelvesubrm 
+    \scriptscriptfont0=\twelvesubsubrm
+  \textfont1=\twelvei \scriptfont1=\twelvesubi 
+    \scriptscriptfont1=\twelvesubsubi
+  \textfont2=\twelvesy \scriptfont2=\twelvesubsy 
+    \scriptscriptfont2=\twelvesubsubsy
+  \textfont3=\twelveex \scriptfont3=\twelvesubex 
+    \scriptscriptfont3=\twelvesubsubex
+  \textfont\itfam=\twelveit  \def\it{\fam\itfam\twelveit}%
+  \textfont\slfam=\twelvesl  \def\sl{\fam\slfam\twelvesl}%
+  \textfont\ttfam=\twelvett  \def\tt{\fam\ttfam\twelvett}%
+  \textfont\bffam=\twelvebf  \scriptfont\bffam=\twelvesubbf
+    \scriptscriptfont\bffam=\twelvesubsubbf  \def\bf{\fam\bffam\twelvebf}%
+  \ifamsfonts
+  \textfont\bbbfam\twelvebbbold \scriptfont\bbbfam\twelvesubbbbold
+  \def\bbbold{\fam\bbbfam\twelvebbbold}\fi%
+  \normalbaselineskip=15pt%
+  \setbox\strutbox=\hbox{\vrule height10.6pt depth4.4pt width0pt}%
+  \def\sc{\fam\smcap\twelvescfont}\textfont\smcap=\twelvescfont 
+  \normalbaselines\rm}

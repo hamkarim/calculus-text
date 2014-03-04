@@ -1,0 +1,146 @@
+\chapter {Analytic Geometry}
+\section {Lines}
+\section {Distance Between Two Points; Circles}
+\section {Functions}
+\section {Shifts and Dilations}
+\chapter {Instantaneous Rate of Change:\titlebreak The Derivative}
+\section {The slope of a function}
+\section {An example}
+\section {Limits}
+\section {The Derivative Function}
+\section {Adjectives For Functions}
+\chapter {Rules for Finding Derivatives}
+\section {The Power Rule}
+\section {Linearity of the Derivative}
+\section {The Product Rule}
+\section {The Quotient Rule}
+\section {The Chain Rule}
+\chapter {Transcendental Functions}
+\section {Trigonometric Functions}
+\section {The Derivative of $\sin x$}
+\section {A hard limit}
+\section {The Derivative of $\sin x$, continued}
+\section {Derivatives of the Trigonometric Functions}
+\section {Exponential and Logarithmic functions}
+\section {Derivatives of the exponential and\titlebreak logarithmic functions}
+\section {Implicit Differentiation}
+\section {Inverse Trigonometric Functions}
+\section {Limits revisited}
+\section {Hyperbolic Functions}
+\chapter {Curve Sketching}
+\section {Maxima and Minima}
+\section {The first derivative test}
+\section {The second derivative test}
+\section {Concavity and inflection points}
+\section {Asymptotes and Other Things to Look For}
+\chapter {Applications of the Derivative}
+\section {Optimization}
+\section {Related Rates}
+\section {Newton's Method}
+\section {The Mean Value Theorem}
+\chapter {Integration}
+\section {Two examples}
+\section {The Fundamental Theorem of Calculus}
+\section {Some Properties of Integrals}
+\chapter {Techniques of Integration}
+\section {Substitution}
+
+\ansno8.1.18:
+ Let $u=x^4-2x$, $du=4x^3-2\,dx=2(2x^3-1)\,dx$, then
+$\ds\int_{-1}^1
+(2x^3-1)(x^4-2x)^6\,dx={1\over2}\int_3^{-1}u^6\,du=\left.{u^7\over14}\right|_3^{-1}=
+{-1-3^7\over14}$
+\section {Powers of sine and cosine}
+
+\ansno8.2.6:
+ $$\eqalign{
+\int \sin^2x\cos^2x\,dx&=\int {1-\cos(2x)\over2}\cdot{1+\cos(2x)\over2}\,dx\cr
+&={1\over4}\int 1-\cos^2 2x\,dx\cr
+&={1\over4}\left(x-\int\cos^2 2x\,dx\right)\cr
+&={1\over4}\left(x-{1\over2}\int 1+\cos4x \,dx\right)\cr
+&={1\over4}\left(x-{1\over2}\left(x+{\sin 4x\over 4}\right)\right)\cr
+&={1\over4}\left(x-{x\over2}-{\sin 4x\over 8}\right)+C\cr
+}$$
+
+\section {Trigonometric Substitutions}
+\section {Integration by Parts}
+\section {Rational Functions}
+\section {Numerical Integration}
+\section {Additional exercises}
+\chapter {Applications of Integration}
+\section {Area between curves}
+\section {Distance, Velocity, Acceleration}
+\section {Volume}
+\section {Average value of a function}
+\section {Work}
+\section {Center of Mass}
+\section {Kinetic energy; improper integrals}
+\section {Probability}
+\section {Arc Length}
+\section {Surface Area}
+\chapter {Polar Coordinates,\titlebreak Parametric Equations}
+\section {Polar Coordinates}
+\section {Slopes in polar coordinates}
+\section {Areas in polar coordinates}
+\section {Parametric Equations}
+\section {Calculus with Parametric Equations}
+\chapter {Sequences and Series}
+\section {Sequences}
+\section {Series}
+\section {The Integral Test}
+\section {Alternating Series}
+\section {Comparison Tests}
+\section {Absolute Convergence}
+\section {The Ratio and Root Tests}
+\section {Power Series}
+\section {Calculus with Power Series}
+\section {Taylor Series}
+\section {Taylor's Theorem}
+\section {Additional exercises}
+\chapter {Three Dimensions}
+\section {The Coordinate System}
+\section {Vectors}
+\section {The Dot Product}
+\section {The Cross Product}
+\section {Lines and Planes}
+\section {Other Coordinate Systems}
+\chapter {Vector Functions}
+\section {Space Curves}
+\section {Calculus with vector functions}
+\section {Arc length and curvature}
+\section {Motion along a curve}
+\chapter {Partial Differentiation}
+\section {Functions of Several Variables}
+\section {Limits and Continuity}
+\section {Partial Differentiation}
+\section {The Chain Rule}
+\section {Directional Derivatives}
+\section {Higher order derivatives}
+\section {Maxima and minima}
+\section {Lagrange Multipliers}
+\chapter {Multiple Integration}
+\section {Volume and Average Height}
+\section {Double Integrals in Cylindrical Coordinates}
+\section {Moment and Center of Mass}
+\section {Surface Area}
+\section {Triple Integrals}
+\section {Cylindrical and Spherical Coordinates}
+\section {Change of Variables}
+\chapter {Vector Calculus}
+\section {Vector Fields}
+\section {Line Integrals}
+\section {The Fundamental Theorem of Line Integrals}
+\section {Green's Theorem}
+\section {Divergence and Curl}
+\section {Vector Functions for Surfaces}
+\section {Surface Integrals}
+\section {Stokes's Theorem}
+\section {The Divergence Theorem}
+\chapter {Differential Equations}
+\section {First Order Differential Equations}
+\section {First Order Homogeneous Linear Equations}
+\section {First Order Linear Equations}
+\section {Approximation}
+\section {Second Order Homogeneous Equations}
+\section {Second Order Linear Equations}
+\section {Second Order Linear Equations, take two}

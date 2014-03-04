@@ -1,0 +1,138 @@
+\section{The second derivative test} {}{}
+\nobreak
+The basis of the first derivative test is that if the derivative
+changes from positive to negative at a point at which the derivative
+is zero then there is a local maximum at the point, and similarly for
+a local minimum. If $f'$ changes from positive to negative it is
+decreasing; this means that the derivative of $f'$, $f''$, might be negative,
+and if in fact $f''$ is negative then $f'$ is definitely
+decreasing, so there is a local maximum at the point in question. Note
+well that $f'$ might change from positive to negative while $f''$ is
+zero, in which case $f''$ gives us no information about the critical
+value. Similarly, if $f'$ changes from negative to positive there is a
+local minimum at the point, and $f'$ is increasing. If $f''>0$ at the
+point, this tells us that $f'$ is increasing, and so there is a local
+minimum. 
+
+\example
+Consider again $f(x)=\sin x + \cos x$, with $f'(x)=\cos x-\sin x$ and
+$ f''(x)=-\sin x -\cos x$. Since $\ds f''(\pi/4)=-\sqrt{2}/2-\sqrt2/2=-\sqrt2<0$,
+we know there is a local maximum at $\pi/4$. Since
+$\ds f''(5\pi/4)=--\sqrt{2}/2--\sqrt2/2=\sqrt2>0$, there is a local
+minimum at $5\pi/4$.
+\endexample
+
+When it works, the second derivative test is often the easiest way to
+identify local maximum and minimum points. Sometimes the test fails,
+and sometimes the second derivative is quite difficult to evaluate; in
+such cases we must fall back on one of the previous tests.
+
+\example
+Let $\ds f(x)=x^4$. The derivatives are $\ds f'(x)=4x^3$ and
+$\ds f''(x)=12x^2$. Zero is the only critical value, but $f''(0)=0$, so
+the second derivative test tells us nothing. However, $f(x)$ is
+positive everywhere except at zero, so clearly $f(x)$ has a local
+minimum at zero. On the other hand, $\ds f(x)=-x^4$ also has zero as its
+only critical value, and the second derivative is again zero, but
+$\ds -x^4$ has a local maximum at zero.
+\endexample
+
+\exercises
+Find all local maximum and minimum points by the second derivative
+test. 
+
+\twocol
+\exercise $\ds y=x^2-x$ 
+\answer min at $x=1/2$
+\endanswer
+\endexercise
+
+\exercise $\ds y=2+3x-x^3$ 
+\answer min at $x=-1$, max at $x=1$
+\endanswer
+\endexercise
+
+\exercise $\ds y=x^3-9x^2+24x$
+\answer max at $x=2$, min at $x=4$
+\endanswer
+\endexercise
+
+\exercise $\ds y=x^4-2x^2+3$ 
+\answer min at $x=\pm 1$, max at $x=0$.
+\endanswer
+\endexercise
+
+\exercise $\ds y=3x^4-4x^3$
+\answer min at $x=1$
+\endanswer
+\endexercise
+
+\exercise $\ds y=(x^2-1)/x$
+\answer none
+\endanswer
+\endexercise
+
+\exercise $\ds y=3x^2-(1/x^2)$ 
+\answer none
+\endanswer
+\endexercise
+
+\exercise $y=\cos(2x)-x$ 
+\answer min at $x=7\pi/12+n\pi$, max at $x=-\pi/12+n\pi$, for integer $n$.
+\endanswer
+\endexercise
+
+\exercise $\ds y = 4x+\sqrt{1-x}$
+\answer max at $x=63/64$
+\endanswer
+\endexercise
+
+\exercise $\ds y = (x+1)/\sqrt{5x^2 + 35}$
+\answer max at $x=7$
+\endanswer
+\endexercise
+
+\exercise $\ds y= x^5 - x$
+\answer max at $\ds -5^{-1/4}$, min at $\ds 5^{-1/4}$
+\endanswer
+\endexercise
+
+\exercise $\ds y = 6x +\sin 3x$
+\answer none
+\endanswer
+\endexercise
+
+\exercise $\ds y = x+ 1/x$
+\answer max at $-1$, min at $1$
+\endanswer
+\endexercise
+
+\exercise $\ds y = x^2+ 1/x$
+\answer min at $\ds 2^{-1/3}$
+\endanswer
+\endexercise
+
+\exercise $\ds y = (x+5)^{1/4}$
+\answer none
+\endanswer
+\endexercise
+
+\exercise $\ds y = \tan^2 x$
+\answer min at $n\pi$
+\endanswer
+\endexercise
+
+\exercise $\ds y =\cos^2 x - \sin^2 x$
+\answer max at $n\pi$, min at $\pi/2+n\pi$
+\endanswer
+\endexercise
+
+\exercise $\ds y = \sin^3 x$
+\answer max at $\pi/2+2n\pi$, min at $3\pi/2+2n\pi$
+\endanswer
+
+\endtwocol
+\endexercise
+
+\endexercises
+
